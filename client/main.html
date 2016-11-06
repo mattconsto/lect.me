@@ -1,0 +1,91 @@
+<head>
+  <title>project</title>
+</head>
+
+<body>
+  <h1>Welcome to project!</h1>
+
+  {{> loginButtons}}
+
+  <form class="new-resource">
+    <select name="type">
+      <option value="text">Text</option>
+      <option value="webpage">Webpage</option>
+      <option value="picture">Picture</option>
+      <option value="audio">Audio</option>
+      <option value="video">Video</option>
+      <option value="pdf">PDF</option>
+      <option value="document">Document</option>
+      <option value="sheet">Sheet</option>
+      <option value="presentation">Presentation</option>
+      <option value="hangman">Hangman</option>
+    </select>
+    <input type="text" name="text" placeholder="Text" />
+  </form>
+
+  <ul>
+    {{#each messages}}
+      {{> resourceTemplate}}
+    {{/each}}
+  </ul>
+</body>
+
+<template name="message">
+	<li>
+		<span class="text">{{createdAt}} - {{username}} - {{type}} - {{text}}</span>
+	</li>
+</template>
+
+<template name="resource_text">
+  <h3>Text: {{text}}</h3>
+  <p>- {{username}}</p>
+</template>
+
+<template name="resource_webpage">
+  <h3>Webpage: {{text}}</h3>
+  <iframe src="{{text}}">Iframes are not supported in your browser</iframe>
+</template>
+
+<template name="resource_picture">
+  <h3>Picture: {{text}}</h3>
+  <img src="{{text}}" />
+</template>
+
+<template name="resource_audio">
+  <h3>Audio: {{text}}</h3>
+  <audio controls>
+    <source src="{{text}}">
+  </audio>
+</template>
+
+<template name="resource_video">
+  <h3>Video: {{text}}</h3>
+  <video controls>
+    <source src="{{text}}">
+  </video>
+</template>
+
+<template name="resource_pdf">
+  <h3>PDF: {{text}}</h3>
+  <iframe src="{{text}}">Iframes are not supported in your browser</iframe>
+</template>
+
+<template name="resource_document">
+  <h3>Document: {{text}}</h3>
+</template>
+
+<template name="resource_sheet">
+  <h3>Sheet: {{text}}</h3>
+</template>
+
+<template name="resource_presentation">
+  <h3>Presentation: {{text}}</h3>
+</template>
+
+<template name="resource_hangman">
+  <h3>Hangman</h3>
+</template>
+
+<template name="resource_undefined">
+  <h3>Undefined resource: {{type}}</h3>
+</template>

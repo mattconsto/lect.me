@@ -1,0 +1,48 @@
+svm-mc21g14-3yp.ecs.soton.ac.uk
+
+http://www.namemesh.com/domain-name-search/
+https://randomword.com/
+check name isn't used/common
+
+Good names:
+debate.expert
+debate.plus
+discourse.plus
+fascinate.live
+lecture.games
+lecture.ninja
+participate.live
+quest.link
+quiz.expert
+topic.guru
+
+Decent names:
+captiv.at
+debate.ninja
+debate.zone
+euphoria.live
+fascinate.ninja
+gaze.live
+lecture.tips
+lecture.tools
+lecture.zone
+quiz.digital
+rhapsody.live
+rhapsody.space
+rhapsodic.space
+topic.expert
+
+cons.to
+consto.uk
+consterd.in
+
+release platforms:
+-web
+-android
+-win32
+-win64
+-linux32
+-linux64
+-osx
+
+need to get a vm with world access to host thing on.
