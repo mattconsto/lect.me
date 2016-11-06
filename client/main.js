@@ -7,47 +7,26 @@ import { Messages } from '../imports/api/messages.js';
 
 import '../imports/startup/accounts-config.js';
 import './main.html';
+import './resources.html';
 
 Template.body.onCreated(function bodyOnCreated() {
 	this.state = new ReactiveDict();
+	this.state.set('card-number', 0);
 	Meteor.subscribe('messages');
 });
-
-Template.registerHelper("equals", function (a, b) {
-  return (a == b);
-});
-
-
-	// <select name="type">
-	// 	<option value="text">Text</option>
-	// 	<option value="webpage">Webpage</option>
-	// 	<option value="picture">Picture</option>
-	// 	<option value="audio">Audio</option>
-	// 	<option value="video">Video</option>
-	// 	<option value="pdf">PDF</option>
-	// 	<option value="document">Document</option>
-	// 	<option value="sheet">Sheet</option>
-	// 	<option value="presentation">Presentation</option>
-	// 	<option value="hangman">Hangman</option>
 
 Template.body.helpers({
 	messages() {
 		const instance = Template.instance();
-
-		return Messages.find({}, { sort: { createdAt: -1 } });
+		if(instance.state.get('card-layout')) {
+			return Messages.find({}, {sort: { createdAt: -1 }, limit: 1, skip: instance.state.get('card-number')});
+		} else {
+			return Messages.find({}, {sort: { createdAt: -1 }});
+		}
 	},
 	resourceTemplate() {
 		return Template["resource_" + this.type];
 	}
-
-	// rsvpButtonTemplate: function(rsvp) {
-  //       switch(rsvp){
-  //           case 'yes':   return Template.buttonYes;
-  //           case 'maybe': return Template.buttonMaybe;
-  //           case 'no':    return Template.buttonNo;
-  //           case 'none':  return Template.buttonNone;
-  //       }
-  //   }
 });
 
 Template.body.events({
@@ -63,5 +42,31 @@ Template.body.events({
 
 		// Clear
 		target.text.value = '';
+	},
+	'change .card-layout input'(event) {
+		const instance = Template.instance();
+		$('html').attr('fullscreen', event.target.checked);
+		instance.state.set('card-layout', event.target.checked);
+	},
+	'#card-container keyup'(event) {
+		const instance = Template.instance();
+		console.log(event);
+		switch(event.which) {
+			case 37: instance.state.set('card-number', Math.max(instance.state.get('card-number') - 1, 0)); break;
+			case 39: instance.state.set('card-number', Math.min(instance.state.get('card-number') + 1, Messages.find({}).count() - 1)); break;
+			case 80: instance.state.set('card-layout', event.target.checked); break;
+		}
+		console.log(event.which);
+	},
+	'submit .previous-card'(event) {
+			event.preventDefault();
+			const instance = Template.instance();
+			instance.state.set('card-number', Math.max(instance.state.get('card-number') - 1, 0));
+	},
+	'submit .next-card'(event) {
+			event.preventDefault();
+			const instance = Template.instance();
+			instance.state.set('card-number', Math.min(instance.state.get('card-number') + 1, Messages.find({}).count() - 1));
 	}
+
 });

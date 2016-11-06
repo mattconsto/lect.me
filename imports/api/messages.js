@@ -15,7 +15,6 @@ Meteor.methods({
 	'messages.insert'(type, text) {
 		check(text, String);
 		if(!this.userId) throw new Meteor.Error('not-authorized');
-
 		Messages.insert({
 			type,
 			text,
