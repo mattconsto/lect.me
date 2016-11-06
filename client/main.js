@@ -13,6 +13,16 @@ Template.body.onCreated(function bodyOnCreated() {
 	this.state = new ReactiveDict();
 	this.state.set('card-number', 0);
 	Meteor.subscribe('messages');
+	
+	let instance = this;
+	$(document).on('keyup', function(event) {
+		switch(event.which) {
+			case 37: instance.state.set('card-number', Math.max(instance.state.get('card-number') - 1, 0)); break;
+			case 39: instance.state.set('card-number', Math.min(instance.state.get('card-number') + 1, Messages.find({}).count() - 1)); break;
+			case 27: instance.state.set('card-layout', !instance.state.get('card-layout')); $('html').attr('fullscreen', instance.state.get('card-layout')); break;
+		}
+		console.log(event.which);
+	});
 });
 
 Template.body.helpers({
@@ -47,16 +57,6 @@ Template.body.events({
 		const instance = Template.instance();
 		$('html').attr('fullscreen', event.target.checked);
 		instance.state.set('card-layout', event.target.checked);
-	},
-	'#card-container keyup'(event) {
-		const instance = Template.instance();
-		console.log(event);
-		switch(event.which) {
-			case 37: instance.state.set('card-number', Math.max(instance.state.get('card-number') - 1, 0)); break;
-			case 39: instance.state.set('card-number', Math.min(instance.state.get('card-number') + 1, Messages.find({}).count() - 1)); break;
-			case 80: instance.state.set('card-layout', event.target.checked); break;
-		}
-		console.log(event.which);
 	},
 	'submit .previous-card'(event) {
 			event.preventDefault();
