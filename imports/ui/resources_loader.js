@@ -1,0 +1,13 @@
+import './resources/audio.html';
+import './resources/blackboard.html';
+import './resources/document.html';
+import './resources/hangman.html';
+import './resources/pdf.html';
+import './resources/picture.html';
+import './resources/presentation.html';
+import './resources/sheet.html';
+import './resources/text.html';
+import './resources/undefined.html';
+import './resources/video.html';
+import './resources/webpage.html';
+import './resources/whiteboard.html';

@@ -28,3 +28,4 @@ accounts-github
 accounts-password
 kadira:flow-router
 materialize:materialize@=0.97.0
+kadira:blaze-layout
