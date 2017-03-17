@@ -55,6 +55,9 @@ Template.slides.events({
 
 		$('pre:first code').each(function(i, block) {hljs.highlightBlock(block);});
 	},
+	'click .delete'() {
+		Meteor.call('messages.delete', this._id);
+	},
 	'change .card-layout input'(event) {
 		const instance = Template.instance();
 		$('html').attr('fullscreen', event.target.checked);

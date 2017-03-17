@@ -14,6 +14,13 @@ if(Meteor.isServer) {
 }
 
 Meteor.methods({
+	'messages.delete'(id) {
+		check(id, String);
+
+		if(this.owner != this.userID) throw new Meteor.Error('not-authorized');
+
+		Messages.remove(id);
+	},
 	'messages.insert'(type, text, room) {
 		// Check authorization
 		if(!this.userId) throw new Meteor.Error('not-authorized');

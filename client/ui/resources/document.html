@@ -1,7 +1,7 @@
 <template name="resource_document">
 	<div class="resource document card">
 		<div class="card-content">
-			<span class="card-title">{{text}}<span class="right">Document</span></span>
+			<span class="card-title"><button class="delete">&times;</button> {{text}}<span class="right">Document</span></span>
 		</div>
 		<div class="card-image">
 			<iframe src="/ViewerJS/index.html#{{text}}">Iframes are not supported in your browser</iframe>
