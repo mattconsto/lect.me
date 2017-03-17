@@ -7,7 +7,7 @@ import { Messages } from '../imports/api/messages.js';
 
 import '../imports/startup/accounts-config.js';
 
-Template.slides.onCreated(function bodyOnCreated() {
+Template.slides.onCreated(function() {
 	this.state = new ReactiveDict();
 	this.state.set('card-number', 0);
 	Meteor.subscribe('messages');
@@ -24,15 +24,16 @@ Template.slides.onCreated(function bodyOnCreated() {
 });
 
 Template.slides.helpers({
-	messages() {
+	messages(roomID) {
 		const instance = Template.instance();
 		if(instance.state.get('card-layout')) {
-			return Messages.find({}, {sort: { createdAt: -1 }, limit: 1, skip: instance.state.get('card-number')});
+			return Messages.find({room: roomID}, {sort: { createdAt: -1 }, limit: 1, skip: instance.state.get('card-number')});
 		} else {
-			return Messages.find({}, {sort: { createdAt: -1 }});
+			return Messages.find({room: roomID}, {sort: { createdAt: -1 }});
 		}
 	},
 	resourceTemplate() {
+		// Fallback to text if given an invalid resource.
 		return Template["resource_" + this.type] ? Template["resource_" + this.type] : Template["resource_text"];
 	}
 });
@@ -45,8 +46,9 @@ Template.slides.events({
 		const target = event.target;
 		const type   = target.type.value;
 		const text   = target.text.value;
+		const room   = target.room.value;
 
-		Meteor.call('messages.insert', type, text);
+		Meteor.call('messages.insert', type, text, room);
 
 		// Clear
 		target.text.value = '';

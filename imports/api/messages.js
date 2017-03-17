@@ -14,7 +14,7 @@ if(Meteor.isServer) {
 }
 
 Meteor.methods({
-	'messages.insert'(type, text) {
+	'messages.insert'(type, text, room) {
 		// Check authorization
 		if(!this.userId) throw new Meteor.Error('not-authorized');
 
@@ -27,6 +27,7 @@ Meteor.methods({
 		Messages.insert({
 			type,
 			text,
+			room,
 			createdAt: new Date(),
 			owner: this.userId,
 			username: Meteor.users.findOne(this.userId).username,

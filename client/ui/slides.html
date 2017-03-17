@@ -4,6 +4,7 @@
 			<div class="card-content">
 				<span class="card-title grey-text text-darken-4">New Resource</span>
 				<form class="new-resource">
+					<input type="hidden" name="room" value="{{room}}" />
 					<div class="row" style="margin-bottom: 0;">
 						<div class="input-field col s5" style="margin-top: 0;">
 							<select name="type">
@@ -64,7 +65,7 @@
 		</div>
 
 		<div id="card-container">
-			{{#each messages}}{{> resourceTemplate}}{{/each}}
+			{{#each messages room}}{{> resourceTemplate}}{{/each}}
 		</div>
 	</div>
 </template>
