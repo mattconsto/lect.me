@@ -6,6 +6,8 @@
  * Made By MaterializeCSS.com
  */
 
+@import "cards.import.less";
+
 html, body, #__blaze-root {
 	height: 100%;
 }
@@ -71,31 +73,6 @@ footer.page-footer {
 	margin: 0;
 }
 
-iframe {
-	width: 100%;
-}
-
 .side-nav {
 	transform: none !important;
-}
-
-.card {
-	overflow: visible
-}
-
-.card .card-content .card-title {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	display: block;
-}
-
-html[fullscreen="true"] #card-container .card {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	margin: 0;
-	z-index: 999;
 }

@@ -1,8 +1,10 @@
 <template name="resource_audio">
-<div class="card">
+	<div class="resource audio card">
 		<div class="card-content">
-			<span class="card-title grey-text text-darken-4">Audio: {{text}}</span>
-			<p><audio controls><source src="{{text}}"></audio></p>
+			<span class="card-title">{{text}}<span class="right">Audio</span></span>
+		</div>
+		<div class="card-image">
+			<audio controls><source src="{{text}}"></audio>
 		</div>
 	</div>
 </template>

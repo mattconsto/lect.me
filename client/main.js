@@ -19,7 +19,6 @@ Template.slides.onCreated(function() {
 			case 39: instance.state.set('card-number', Math.min(instance.state.get('card-number') + 1, Messages.find({}).count() - 1)); break;
 			case 27: instance.state.set('card-layout', !instance.state.get('card-layout')); $('html').attr('fullscreen', instance.state.get('card-layout')); break;
 		}
-		console.log(event.which);
 	});
 });
 
@@ -33,8 +32,8 @@ Template.slides.helpers({
 		}
 	},
 	resourceTemplate() {
-		// Fallback to text if given an invalid resource.
-		return Template["resource_" + this.type] ? Template["resource_" + this.type] : Template["resource_text"];
+		// Fallback to undefined if given an invalid resource.
+		return Template["resource_" + this.type] ? Template["resource_" + this.type] : Template["resource_undefined"];
 	}
 });
 
@@ -59,14 +58,14 @@ Template.slides.events({
 		instance.state.set('card-layout', event.target.checked);
 	},
 	'submit .previous-card'(event) {
-			event.preventDefault();
-			const instance = Template.instance();
-			instance.state.set('card-number', Math.max(instance.state.get('card-number') - 1, 0));
+		event.preventDefault();
+		const instance = Template.instance();
+		instance.state.set('card-number', Math.max(instance.state.get('card-number') - 1, 0));
 	},
 	'submit .next-card'(event) {
-			event.preventDefault();
-			const instance = Template.instance();
-			instance.state.set('card-number', Math.min(instance.state.get('card-number') + 1, Messages.find({}).count() - 1));
+		event.preventDefault();
+		const instance = Template.instance();
+		instance.state.set('card-number', Math.min(instance.state.get('card-number') + 1, Messages.find({}).count() - 1));
 	}
 
 });

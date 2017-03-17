@@ -1,8 +1,10 @@
 <template name="resource_webpage">
-	<div class="card">
+	<div class="resource webpage card">
 		<div class="card-content">
-			<span class="card-title grey-text text-darken-4">Webpage: {{text}}</span>
-			<p><iframe src="{{text}}">Iframes are not supported in your browser</iframe></p>
+			<span class="card-title">{{text}}<span class="right">Webpage</span></span>
+		</div>
+		<div class="card-image">
+			<iframe src="{{text}}">Iframes are not supported in your browser</iframe>
 		</div>
 	</div>
 </template>

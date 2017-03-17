@@ -1,8 +1,10 @@
 <template name="resource_video">
-	<div class="card">
+	<div class="resource video card">
 		<div class="card-content">
-			<span class="card-title grey-text text-darken-4">Video: {{text}}</span>
-			<p><video controls><source src="{{text}}"></video></p>
+			<span class="card-title">{{text}}<span class="right">Video</span></span>
+		</div>
+		<div class="card-image">
+			<video controls><source src="{{text}}"></video>
 		</div>
 	</div>
 </template>

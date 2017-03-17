@@ -1,8 +1,10 @@
 <template name="resource_document">
-	<div class="card">
+	<div class="resource document card">
 		<div class="card-content">
-			<span class="card-title grey-text text-darken-4">Document: {{text}}</span>
-			<p></p>
+			<span class="card-title">{{text}}<span class="right">Document</span></span>
+		</div>
+		<div class="card-image">
+			<iframe src="/ViewerJS/index.html#{{text}}">Iframes are not supported in your browser</iframe>
 		</div>
 	</div>
 </template>
