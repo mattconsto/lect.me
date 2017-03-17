@@ -4,6 +4,8 @@ import { check } from 'meteor/check';
 
 export const Messages = new Mongo.Collection('messages');
 
+const validTypes = ['text', 'webpage', 'picture', 'audio', 'video', 'pdf', 'document', 'sheet', 'presentation', 'hangman', 'whiteboard', 'blackboard'];
+
 if(Meteor.isServer) {
 	// Runs only on the server
 	Meteor.publish('messages', function messagesPublication() {
@@ -13,8 +15,15 @@ if(Meteor.isServer) {
 
 Meteor.methods({
 	'messages.insert'(type, text) {
-		check(text, String);
+		// Check authorization
 		if(!this.userId) throw new Meteor.Error('not-authorized');
+
+		// Check types and values
+		check(type, String);
+		if(validTypes.indexOf(type) === -1) throw new Meteor.Error('invalid-type');
+		check(text, String);
+
+		// Insert
 		Messages.insert({
 			type,
 			text,

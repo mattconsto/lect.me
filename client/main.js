@@ -33,7 +33,7 @@ Template.slides.helpers({
 		}
 	},
 	resourceTemplate() {
-		return Template["resource_" + this.type];
+		return Template["resource_" + this.type] ? Template["resource_" + this.type] : Template["resource_text"];
 	}
 });
 
