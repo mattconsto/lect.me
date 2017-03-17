@@ -25,11 +25,11 @@
 .resource .card-image {
 	flex-grow: 1;
 	min-height: 200px;
-	background: black;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	overflow: hidden;
+	font-size: 2em;
 }
 
 .resource .card-image > * {
@@ -39,6 +39,16 @@
 	height: 100% !important;
 	border: none !important;
 	object-fit: contain !important;
+}
+
+.resource pre {
+	margin: 0;
+
+	code {
+		height: 100%;
+		padding: 0.5em;
+		display: block;
+	}
 }
 
 html[fullscreen="true"] {

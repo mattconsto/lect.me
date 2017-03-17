@@ -1,0 +1,14 @@
+<template name="resource_code">
+	<div class="resource code card">
+		<div class="card-content">
+			<span class="card-title">{{user}}<span class="right">Code</span></span>
+		</div>
+		<div class="card-image">
+			<pre><code>{{text}}</code></pre>
+		</div>
+		<script>
+			// Syntax Highlight
+			$('pre:last code').each(function(i, block) {hljs.highlightBlock(block);});
+		</script>
+	</div>
+</template>

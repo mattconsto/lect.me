@@ -51,6 +51,9 @@ Template.slides.events({
 
 		// Clear
 		target.text.value = '';
+
+
+		$('pre:first code').each(function(i, block) {hljs.highlightBlock(block);});
 	},
 	'change .card-layout input'(event) {
 		const instance = Template.instance();

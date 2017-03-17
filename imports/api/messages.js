@@ -4,7 +4,7 @@ import { check } from 'meteor/check';
 
 export const Messages = new Mongo.Collection('messages');
 
-const validTypes = ['text', 'webpage', 'picture', 'audio', 'video', 'pdf', 'document', 'whiteboard', 'blackboard'];
+const validTypes = ['text', 'code', 'webpage', 'picture', 'audio', 'video', 'pdf', 'document', 'whiteboard', 'blackboard'];
 
 if(Meteor.isServer) {
 	// Runs only on the server
