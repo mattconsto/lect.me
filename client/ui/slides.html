@@ -3,6 +3,7 @@
 		<div class="card">
 			<div class="card-content">
 				<span class="card-title grey-text text-darken-4">New Resource</span>
+				<span class="qr-code">{{{generateQRCode (concat "http://localhost:3000/rooms/" room)}}}</span>
 				<form class="new-resource">
 					<input type="hidden" name="room" value="{{room}}" />
 					<div class="row" style="margin-bottom: 0;">

@@ -7,6 +7,12 @@ import { Messages } from '../imports/api/messages.js';
 
 import '../imports/startup/accounts-config.js';
 
+const qrimage = require("qr-image");
+
+Template.registerHelper('concat', function () {
+	return Array.prototype.slice.call(arguments, 0, -1).join('');
+});
+
 Template.slides.onCreated(function() {
 	this.state = new ReactiveDict();
 	this.state.set('card-number', 0);
@@ -30,6 +36,9 @@ Template.slides.helpers({
 		} else {
 			return Messages.find({room: roomID}, {sort: { createdAt: -1 }});
 		}
+	},
+	generateQRCode(text) {
+		return qrimage.imageSync(text, {ec_level: 'L', type: 'svg'});
 	},
 	resourceTemplate() {
 		// Fallback to undefined if given an invalid resource.
