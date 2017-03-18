@@ -9,12 +9,10 @@ Template.present.onCreated(function() {
 	Meteor.subscribe('rooms');
 	$('html').attr('fullscreen', true);
 
-	// Create if not exists
-	Meteor.call('rooms.navigate', FlowRouter.getParam('roomID'), 0);
-
-	console.log(FlowRouter.getParam('roomID'));
-	console.log(Rooms.find({room: FlowRouter.getParam('roomID')}).fetch());
-	console.log("Slide number: " + Rooms.find({room: FlowRouter.getParam('roomID')}).fetch()[0].slide);
+	if(Rooms.find({room: FlowRouter.getParam('roomID')}).count() <= 0) {
+		console.log("Creating a new room: " + FlowRouter.getParam('roomID'));
+		Meteor.call('rooms.create', FlowRouter.getParam('roomID'), "Untitled");
+	}
 
 	$(document).on('keyup', function(event) {
 		switch(event.which) {

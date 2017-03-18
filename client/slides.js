@@ -5,17 +5,22 @@ import { Messages } from '../imports/api/messages.js';
 import { Rooms } from '../imports/api/rooms.js';
 
 Template.slides.onCreated(function() {
-	this.state = new ReactiveDict();
-	this.state.set('card-number', 0);
 	Meteor.subscribe('messages');
 	Meteor.subscribe('rooms');
 
-	let instance = this;
+	if(Rooms.find({room: FlowRouter.getParam('roomID')}).count() <= 0) {
+		console.log("Creating a new room: " + FlowRouter.getParam('roomID'));
+		Meteor.call('rooms.create', FlowRouter.getParam('roomID'), "Untitled");
+	}
+
 	$(document).on('keyup', function(event) {
 		switch(event.which) {
-			case 37: instance.state.set('card-number', Math.max(instance.state.get('card-number') - 1, 0)); break;
-			case 39: instance.state.set('card-number', Math.min(instance.state.get('card-number') + 1, Messages.find({}).count() - 1)); break;
-			case 27: instance.state.set('card-layout', !instance.state.get('card-layout')); $('html').attr('fullscreen', instance.state.get('card-layout')); break;
+			case 37:
+				Meteor.call('rooms.navigate', FlowRouter.getParam('roomID'), -1);
+				break;
+			case 39:
+				Meteor.call('rooms.navigate', FlowRouter.getParam('roomID'), +1);
+				break;
 		}
 	});
 });
@@ -25,7 +30,7 @@ Template.slides.helpers({
 		return Messages.find({room: FlowRouter.getParam('roomID')}, {sort: { createdAt: -1 }});
 	},
 	slide() {
-		return Messages.find({room: FlowRouter.getParam('roomID')}, {sort: { createdAt: -1 }, limit: 1, skip: Template.instance().state.get('card-number')});
+		return Messages.find({room: FlowRouter.getParam('roomID')}, {sort: { createdAt: -1 }, limit: 1, skip: Rooms.find({room: FlowRouter.getParam('roomID')}).fetch()[0].slide});
 	},
 	resourceTemplate() {
 		// Fallback to undefined if given an invalid resource.
@@ -58,12 +63,10 @@ Template.slides.events({
 	},
 	'submit .previous-card'(event) {
 		event.preventDefault();
-		const instance = Template.instance();
-		instance.state.set('card-number', Math.max(instance.state.get('card-number') - 1, 0));
+		Meteor.call('rooms.navigate', FlowRouter.getParam('roomID'), -1);
 	},
 	'submit .next-card'(event) {
 		event.preventDefault();
-		const instance = Template.instance();
-		instance.state.set('card-number', Math.min(instance.state.get('card-number') + 1, Messages.find({}).count() - 1));
+		Meteor.call('rooms.navigate', FlowRouter.getParam('roomID'), +1);
 	}
 });
