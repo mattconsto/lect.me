@@ -1,3 +1,7 @@
 <template name="layout_blank">
-	{{> Template.dynamic template=content}}
+	{{#unless iframe}}
+		{{> Template.dynamic template=content}}
+	{{else}}
+		<h1>Educast cannot run inside an iframe.</h1>
+	{{/unless}}
 </template>
