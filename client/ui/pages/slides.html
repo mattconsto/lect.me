@@ -1,10 +1,25 @@
 <template name="slides">
 	<div class="row" style="margin-bottom: 0; width: 100%; height: calc(100% - 64px);">
+		<div class="card" style="z-index: 10; position: absolute; right: 10px;">
+			<div class="card-content">
+				<span class="qr-code">{{{qr (concat "http://localhost:3000/rooms/" room)}}}</span>
+				<p>Educast: {{room}}</p>
+			</div>
+		</div>
 		<div class="col s3" style="height: 100%; overflow-x: hidden; overflow-y: scroll;">
+			<nav class="white" role="navigation">
+				<div class="nav-wrapper">
+					<span>Slides</span>
+					<span class="right">
+						<button class="waves-effect waves-light btn">Upload</button>
+						<button class="waves-effect waves-light btn">URL</button>
+						<button class="waves-effect waves-light btn">Create</button>
+					</span>
+				</div>
+			</nav>
 			<div class="card">
 				<div class="card-content">
 					<span class="card-title grey-text text-darken-4">New Resource</span>
-					<span class="qr-code">{{{qr (concat "http://localhost:3000/rooms/" room)}}}</span>
 					<form class="new-resource">
 						<input type="hidden" name="room" value="{{room}}" />
 						<div class="row" style="margin-bottom: 0;">
@@ -50,7 +65,7 @@
 				{{/each}}
 			</div>
 		</div>
-		<div class="col s9" style="height: 100%; overflow: hidden;">
+		<div class="col s9" style="height: 100%; overflow: hidden; background: black;">
 			<div class="resource" style="height: 100%;">
 				<div class="resource-contents" style="height: 100%;">
 					{{#each slide room}}{{> resourceTemplate}}{{/each}}
