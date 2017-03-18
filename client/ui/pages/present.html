@@ -1,7 +1,9 @@
 <template name="present">
-	<div class="container">
-		<div id="card-container">
-			{{#each slide room}}{{> resourceTemplate}}{{/each}}
+	<div class="container" style="height: 100%;">
+		<div class="resource" style="height: 100%;">
+			<div class="resource-contents" style="height: 100%;">
+				{{#each slide room}}{{> resourceTemplate}}{{/each}}
+			</div>
 		</div>
 	</div>
 </template>

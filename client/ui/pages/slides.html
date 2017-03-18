@@ -1,6 +1,6 @@
 <template name="slides">
-	<div class="row" style="margin-bottom: 0; width: 100%;">
-		<div class="col s3">
+	<div class="row" style="margin-bottom: 0; width: 100%; height: calc(100% - 64px);">
+		<div class="col s3" style="height: 100%; overflow-x: hidden; overflow-y: scroll;">
 			<div class="card">
 				<div class="card-content">
 					<span class="card-title grey-text text-darken-4">New Resource</span>
@@ -38,12 +38,23 @@
 			</div>
 
 			<div id="card-container">
-				{{#each messages room}}{{> resourceTemplate}}{{/each}}
+				{{#each messages room}}
+				<div class="resource card">
+					<div class="card-content resource-title">
+						<button class="delete">&times;</button> {{text}}
+					</div>
+					<div class="card-image resource-contents">
+						{{> resourceTemplate}}
+					</div>
+				</div>
+				{{/each}}
 			</div>
 		</div>
-		<div class="col s9">
-			<div id="card-container">
-				{{#each slide room}}{{> resourceTemplate}}{{/each}}
+		<div class="col s9" style="height: 100%; overflow: hidden;">
+			<div class="resource" style="height: 100%;">
+				<div class="resource-contents" style="height: 100%;">
+					{{#each slide room}}{{> resourceTemplate}}{{/each}}
+				</div>
 			</div>
 		</div>
 	</div>

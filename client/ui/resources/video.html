@@ -1,10 +1,5 @@
 <template name="resource_video">
-	<div class="resource video card">
-		<div class="card-content">
-			<span class="card-title"><button class="delete">&times;</button> {{text}}<span class="right">Video</span></span>
-		</div>
-		<div class="card-image">
-			<video controls><source src="{{text}}"></video>
-		</div>
-	</div>
+	<video controls>
+		<source src="{{text}}">
+	</video>
 </template>

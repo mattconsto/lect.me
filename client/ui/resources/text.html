@@ -1,12 +1,5 @@
 <template name="resource_text">
-	<div class="resource text card">
-		<div class="card-content">
-			<span class="card-title"><button class="delete">&times;</button> {{username}}<span class="right">Text</span></span>
-		</div>
-		<div class="card-image">
-			<pre><code class="nohighlight mathjax">{{text}}</code></pre>
-		</div>
-	</div>
+	<pre><code class="nohighlight mathjax">{{text}}</code></pre>
 	<script>
 		$('pre:last code').each(function(i, block) {MathJax.Hub.Queue(["Typeset", MathJax.Hub, block]);});
 	</script>

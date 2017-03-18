@@ -1,10 +1,3 @@
 <template name="resource_webpage">
-	<div class="resource webpage card">
-		<div class="card-content">
-			<span class="card-title"><button class="delete">&times;</button> {{text}}<span class="right">Webpage</span></span>
-		</div>
-		<div class="card-image">
-			<iframe src="{{text}}">Iframes are not supported in your browser</iframe>
-		</div>
-	</div>
+	<iframe src="{{text}}" scrolling="no">Iframes are not supported in your browser</iframe>
 </template>

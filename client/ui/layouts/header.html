@@ -1,6 +1,6 @@
 <template name="header">
 	<nav class="white" role="navigation">
-		<div class="nav-wrapper container">
+		<div class="nav-wrapper{{#if container}} container{{/if}}">
 			<a id="logo-container" href="/pages/index" class="brand-logo">Educast</a>
 			<ul class="right hide-on-med-and-down">
 				<li>{{> loginButtons}}</li>
