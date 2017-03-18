@@ -1,0 +1,50 @@
+<template name="slides">
+	<div class="row" style="margin-bottom: 0; width: 100%;">
+		<div class="col s3">
+			<div class="card">
+				<div class="card-content">
+					<span class="card-title grey-text text-darken-4">New Resource</span>
+					<span class="qr-code">{{{qr (concat "http://localhost:3000/rooms/" room)}}}</span>
+					<form class="new-resource">
+						<input type="hidden" name="room" value="{{room}}" />
+						<div class="row" style="margin-bottom: 0;">
+							<div class="input-field col s5" style="margin-top: 0;">
+								<select name="type">
+									<option value="" disabled selected>Choose your resource</option>
+									<option value="code">Code</option>
+									<option value="text">Text</option>
+									<option value="webpage">Webpage</option>
+									<option value="picture">Picture</option>
+									<option value="audio">Audio</option>
+									<option value="video">Video</option>
+									<option value="pdf">PDF</option>
+									<option value="document">Document</option>
+									<option value="whiteboard">Whiteboard</option>
+									<option value="blackboard">Blackboard</option>
+								</select>
+							</div>
+							<div class="col s5">
+								<input type="text" name="text" placeholder="Text"/>
+							</div>
+							<div class="col s2">
+								<button class="waves-effect waves-light btn">Create</button>
+							</div>
+						</div>
+					</form>
+					<form action="./" method="get">
+						<button class="waves-effect waves-light btn">Present</button>
+					</form>
+				</div>
+			</div>
+
+			<div id="card-container">
+				{{#each messages room}}{{> resourceTemplate}}{{/each}}
+			</div>
+		</div>
+		<div class="col s9">
+			<div id="card-container">
+				{{#each slide room}}{{> resourceTemplate}}{{/each}}
+			</div>
+		</div>
+	</div>
+</template>

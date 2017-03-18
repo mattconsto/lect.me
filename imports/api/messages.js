@@ -8,7 +8,7 @@ const validTypes = ['text', 'code', 'webpage', 'picture', 'audio', 'video', 'pdf
 
 if(Meteor.isServer) {
 	// Runs only on the server
-	Meteor.publish('messages', function messagesPublication() {
+	Meteor.publish('messages', function() {
 		return Messages.find({});
 	});
 }
