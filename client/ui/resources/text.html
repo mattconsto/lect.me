@@ -1,5 +1,5 @@
 <template name="resource_text">
-	<pre><code class="nohighlight mathjax">{{text}}</code></pre>
+	<pre><code class="nohighlight mathjax">{{data}}</code></pre>
 	<script>
 		$('pre:last code').each(function(i, block) {MathJax.Hub.Queue(["Typeset", MathJax.Hub, block]);});
 	</script>

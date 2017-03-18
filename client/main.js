@@ -1,9 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 
-import { Messages } from '../imports/api/messages.js';
 import '../imports/startup/accounts-config.js';
-
 import './slides.js';
 
 Template.registerHelper('concat', function() {

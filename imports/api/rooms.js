@@ -2,6 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
+const validTypes = ['text', 'code', 'webpage', 'picture', 'audio', 'video', 'pdf', 'document', 'whiteboard', 'blackboard'];
+
 export const Rooms = new Mongo.Collection('rooms');
 
 if(Meteor.isServer) {
@@ -88,5 +90,31 @@ Meteor.methods({
 
 		Rooms.update({room: roomID}, {$set: {modifiedTime: new Date()}});
 		Rooms.update({room: roomID}, {$set: {value: value}});
+	},
+	'rooms.deleteSlide'(roomID, slideNumber) {
+		check(slideNumber, Number);
+
+		Meteor.call('rooms.isAuthor', roomID, this.userId);
+
+		// Horrible way to remove by index
+		Rooms.update({room: roomID}, {$unset: {["list." + slideNumber]: 1}})
+		Rooms.update({room: roomID}, {$pull: {list: null}})
+	},
+	'rooms.insertSlide'(roomID, type, data) {
+		// Check types and values
+		check(type, String);
+		if(validTypes.indexOf(type) === -1) throw new Meteor.Error('invalid-type');
+
+		Meteor.call('rooms.isAuthor', roomID, this.userId);
+
+		Rooms.update({room: roomID}, {$push: {slides: {type: type, data: data}}});
+	},
+	'rooms.moveSlide'(roomID, slideNumber, delta) {
+		check(slideNumber, Number);
+		check(delta, number);
+
+		Meteor.call('rooms.isAuthor', roomID, this.userId);
+
+		throw new Meteor.Error('Not implemented!');
 	}
 });

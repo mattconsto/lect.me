@@ -1,11 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 
-import { Messages } from '../imports/api/messages.js';
 import { Rooms } from '../imports/api/rooms.js';
 
 Template.slides.onCreated(function() {
-	Meteor.subscribe('messages');
 	Meteor.subscribe('rooms');
 
 	if(Rooms.find({room: FlowRouter.getParam('roomID')}).count() <= 0) {
@@ -27,10 +25,13 @@ Template.slides.onCreated(function() {
 
 Template.slides.helpers({
 	messages() {
-		return Messages.find({room: FlowRouter.getParam('roomID')}, {sort: { createdAt: -1 }});
+		// Get the full list of slides
+		return Rooms.find({room: FlowRouter.getParam('roomID')}).fetch()[0].slides;
 	},
 	slide() {
-		return Messages.find({room: FlowRouter.getParam('roomID')}, {sort: { createdAt: -1 }, limit: 1, skip: Rooms.find({room: FlowRouter.getParam('roomID')}).fetch()[0].slide});
+		// Get the current slide with the stored offset, it loops.
+		let results = Rooms.find({room: FlowRouter.getParam('roomID')}).fetch()[0];
+		return results.slides.length > 0 ? results.slides[results.slide % (results.slides.length + 1)] : null;
 	},
 	resourceTemplate() {
 		// Fallback to undefined if given an invalid resource.
@@ -47,11 +48,7 @@ Template.slides.events({
 		const type   = target.type.value;
 		const text   = target.text.value;
 
-		if(type !== undefined) {
-			
-		}
-
-		Meteor.call('messages.insert', type, text, FlowRouter.getParam('roomID'));
+		Meteor.call('rooms.insertSlide', FlowRouter.getParam('roomID'), type, text);
 
 		// Clear
 		target.text.value = '';
@@ -59,7 +56,7 @@ Template.slides.events({
 		$('pre:first code').each(function(i, block) {hljs.highlightBlock(block);});
 	},
 	'click .delete'() {
-		Meteor.call('messages.delete', this._id);
+		Meteor.call('rooms.delete', this._id);
 	},
 	'submit .previous-card'(event) {
 		event.preventDefault();
