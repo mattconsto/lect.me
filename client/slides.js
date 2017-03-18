@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 
 import { Messages } from '../imports/api/messages.js';
+import { Rooms } from '../imports/api/rooms.js';
 
 Template.slides.onCreated(function() {
 	this.state = new ReactiveDict();
@@ -20,11 +21,11 @@ Template.slides.onCreated(function() {
 });
 
 Template.slides.helpers({
-	messages(roomID) {
-		return Messages.find({room: roomID}, {sort: { createdAt: -1 }});
+	messages() {
+		return Messages.find({room: FlowRouter.getParam('roomID')}, {sort: { createdAt: -1 }});
 	},
-	slide(roomID) {
-		return Messages.find({room: roomID}, {sort: { createdAt: -1 }, limit: 1, skip: Template.instance().state.get('card-number')});
+	slide() {
+		return Messages.find({room: FlowRouter.getParam('roomID')}, {sort: { createdAt: -1 }, limit: 1, skip: Template.instance().state.get('card-number')});
 	},
 	resourceTemplate() {
 		// Fallback to undefined if given an invalid resource.
@@ -40,9 +41,12 @@ Template.slides.events({
 		const target = event.target;
 		const type   = target.type.value;
 		const text   = target.text.value;
-		const room   = target.room.value;
 
-		Meteor.call('messages.insert', type, text, room);
+		if(type !== undefined) {
+			
+		}
+
+		Meteor.call('messages.insert', type, text, FlowRouter.getParam('roomID'));
 
 		// Clear
 		target.text.value = '';

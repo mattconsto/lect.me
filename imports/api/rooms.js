@@ -6,17 +6,16 @@ export const Rooms = new Mongo.Collection('rooms');
 
 if(Meteor.isServer) {
 	// Runs only on the server
-	Meteor.publish('messages', function() {
-		return Messages.find({});
+	Meteor.publish('rooms', function() {
+		return Rooms.find({});
 	});
 }
 
 Meteor.methods({
-	'rooms.set'(roomID, slide) {
-		check(roomID, string);
-		check(slide, Number);
+	'rooms.navigate'(roomID, delta) {
+		check(roomID, String);
+		check(delta, Number);
 
-		// Rooms.update({room: roomID}, {$set: {slide: slide}});
-		Rooms.upsert({room: roomID}, {$set: {slide: slide}});
+		Rooms.upsert({room: roomID}, {$inc: {slide: delta}});
 	},
 });
