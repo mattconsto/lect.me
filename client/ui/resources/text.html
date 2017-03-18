@@ -4,8 +4,11 @@
 			<span class="card-title"><button class="delete">&times;</button> {{username}}<span class="right">Text</span></span>
 		</div>
 		<div class="card-image">
-			<pre><code class="nohighlight">{{text}}</code></pre>
+			<pre><code class="nohighlight mathjax">{{text}}</code></pre>
 		</div>
 	</div>
+	<script>
+		$('pre:last code').each(function(i, block) {MathJax.Hub.Queue(["Typeset", MathJax.Hub, block]);});
+	</script>
 </template>
 
