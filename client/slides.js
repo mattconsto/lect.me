@@ -58,11 +58,11 @@ Template.slides.events({
 	'click .delete'() {
 		Meteor.call('rooms.delete', this._id);
 	},
-	'submit .previous-card'(event) {
+	'click .previous-card'(event) {
 		event.preventDefault();
 		Meteor.call('rooms.navigate', FlowRouter.getParam('roomID'), -1);
 	},
-	'submit .next-card'(event) {
+	'click .next-card'(event) {
 		event.preventDefault();
 		Meteor.call('rooms.navigate', FlowRouter.getParam('roomID'), +1);
 	}

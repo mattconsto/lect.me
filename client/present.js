@@ -36,11 +36,11 @@ Template.present.helpers({
 });
 
 Template.present.events({
-	'submit .previous-card'(event) {
+	'click .previous-card'(event) {
 		event.preventDefault();
 		Meteor.call('rooms.navigate', FlowRouter.getParam('roomID'), -1);
 	},
-	'submit .next-card'(event) {
+	'click .next-card'(event) {
 		event.preventDefault();
 		Meteor.call('rooms.navigate', FlowRouter.getParam('roomID'), +1);
 	}
