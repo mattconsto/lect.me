@@ -72,6 +72,16 @@ Template.slides.events({
 
 		event.target.hyperlink.value = '';
 	},
+	'change #new-upload input[type="file"]'(event) {
+		event.preventDefault();
+		console.log("Uploading");
+
+		console.log(event.target.files);
+
+		for(var i = 0; i < event.target.files.length; i++) {
+			Meteor.saveFileClient(event.target.files[0], event.target.files[0].name);
+		}
+	},
 	'submit #new-content'(event) {
 		event.preventDefault();
 
