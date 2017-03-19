@@ -7,16 +7,43 @@
 			</div>
 		</div>
 		<div class="col s9 m6 l3" style="height: 100%; overflow-x: hidden; overflow-y: scroll;">
-			<nav class="white" role="navigation">
-				<div class="nav-wrapper">
-					<span>Slides</span>
-					<span class="right">
-						<button class="waves-effect waves-light btn">Upload</button>
-						<button class="waves-effect waves-light btn">URL</button>
-						<button class="waves-effect waves-light btn">Create</button>
-					</span>
+			<div class="card">
+				<div class="card-content">
+					<form action="#">
+						<div class="row">
+							<div class="file-field input-field">
+								<div class="btn">
+									<span>File</span>
+									<input type="file" multiple>
+								</div>
+								<div class="file-path-wrapper">
+									<input class="file-path validate" type="text" placeholder="Upload one or more files.">
+								</div>
+							</div>
+						</div>
+					</form>
+
+					<form action="#" id="new-hyperlink">
+						<div class="row">
+							<div class="input-field">
+								<input name="hyperlink" id="new-hyperlink-value" type="text" class="validate">
+								<label for="new-hyperlink-value">Hyperlink</label>
+							</div>
+							<button class="waves-effect waves-light btn">Create</button>
+						</div>
+					</form>
+
+					<form action="#" id="new-content">
+						<div class="row">
+							<div class="input-field">
+								<textarea name="content" id="new-content-value" class="materialize-textarea"></textarea>
+								<label for="new-content-value">Content</label>
+							</div>
+							<button class="waves-effect waves-light btn">Create</button>
+						</div>
+					</form>
 				</div>
-			</nav>
+			</div>
 			<div class="card">
 				<div class="card-content">
 					<span class="card-title grey-text text-darken-4">New Resource</span>

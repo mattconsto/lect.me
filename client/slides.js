@@ -2,6 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 
 import { Rooms } from '../imports/api/rooms.js';
+import { extensionBlacklist } from './blacklist.js';
+import { urlReplacements } from './replacements.js';
 
 Template.slides.onCreated(function() {
 	Meteor.subscribe('rooms');
@@ -40,6 +42,43 @@ Template.slides.helpers({
 });
 
 Template.slides.events({
+	'submit #new-hyperlink'(event) {
+		event.preventDefault();
+
+		let url = require('url').parse(event.target.hyperlink.value);
+		let found = false;
+
+		// See if the url is in the database
+		for(var regexp in urlReplacements) {
+			let match = new RegExp(regexp).exec(url.href);
+			if(match) {
+				url = url.parse(require('sprintf-js').vsprintf(urlReplacements[regexp], match));
+				found = true;
+				break;
+			}
+		}
+
+		// Identify the correct extension
+		let extension = 'webpage';
+		if(!found) {
+			let parsed = url.pathname.split('/').pop().split('.');
+			if(parsed.length > 1 && extensionBlacklist[parsed[parsed.length-1]].toLowerCase()) {
+				extension = extensionBlacklist[parsed[parsed.length-1]].toLowerCase();
+				console.log('Found extension: ' + extension);
+			}
+		}
+
+		Meteor.call('rooms.insertSlide', FlowRouter.getParam('roomID'), extension, url.href);
+
+		event.target.hyperlink.value = '';
+	},
+	'submit #new-content'(event) {
+		event.preventDefault();
+
+		Meteor.call('rooms.insertSlide', FlowRouter.getParam('roomID'), 'text', event.target.content.value);
+
+		event.target.content.value = '';
+	},
 	'submit .new-resource'(event) {
 		// We don't want to reload!
 		event.preventDefault();
@@ -56,7 +95,7 @@ Template.slides.events({
 		$('pre:first code').each(function(i, block) {hljs.highlightBlock(block);});
 	},
 	'click .delete'() {
-		Meteor.call('rooms.delete', this._id);
+		Meteor.call('rooms.deleteSlide', FlowRouter.getParam('roomID'), this._id);
 	},
 	'click .previous-card'(event) {
 		event.preventDefault();
