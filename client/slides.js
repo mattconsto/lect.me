@@ -2,11 +2,27 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 
 import { Rooms } from '../imports/api/rooms.js';
+import '../imports/api/messages.js';
 import { extensionBlacklist } from './blacklist.js';
 import { urlReplacements } from './replacements.js';
 
+let lastTimestamp = new Date();
+
+let messagelist = {};
+
 Template.slides.onCreated(function() {
 	Meteor.subscribe('rooms');
+
+	// // this.autorun(() => {
+	// 	messagelist = Meteor.subscribe('messages.retrieve', FlowRouter.getParam('roomID'), lastTimestamp);
+	// // });
+	// console.log(messagelist);
+
+	// messagelist.find().observeChanges({
+	// 	added: function (newDoc) {
+	// 		console.log("doc added: " + newDoc);
+	// 	}
+	// });
 
 	if(Rooms.find({room: FlowRouter.getParam('roomID')}).count() <= 0) {
 		console.log("Creating a new room: " + FlowRouter.getParam('roomID'));
@@ -23,6 +39,18 @@ Template.slides.onCreated(function() {
 				break;
 		}
 	});
+});
+
+	// 	video.addEventListener('ratechange', function(event) {
+	// 	video.addEventListener('seeked', function(event) {
+
+Template.resource_video.events({
+	'video play'(event) {
+		Meteor.call('messages.send', FlowRouter.getParam('roomID'), 'play');
+	},
+	'video pause'(event) {
+		Meteor.call('messages.send', FlowRouter.getParam('roomID'), 'pause');
+	}
 });
 
 Template.slides.helpers({

@@ -12,6 +12,14 @@ Template.registerHelper('qr', function(text) {
 	return require("qr-image").imageSync(text, {ec_level: 'L', type: 'svg'});
 });
 
+Template.registerHelper('md', function(text) {
+	let marked = require('marked');
+	marked.setOptions({
+		highlight: function (code) {return require('highlight.js').highlightAuto(code).value;}
+	});
+	return marked(text);
+});
+
 const iframe = function () {
 	try {
 		return window.self !== window.top;
