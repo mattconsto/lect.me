@@ -116,12 +116,20 @@ Meteor.methods({
 
 		Rooms.update({room: roomID}, {$push: {slides: {type: type, data: data}}});
 	},
-	'rooms.moveSlide'(roomID, slideNumber, delta) {
-		check(slideNumber, Number);
-		check(delta, number);
+	'rooms.moveSlide'(roomID, from, to) {
+		check(from, Number);
+		check(to, Number);
 
 		Meteor.call('rooms.isAuthor', roomID, this.userId);
 
-		throw new Meteor.Error('Not implemented!');
+		let content = Rooms.find({room: roomID}).fetch()[0].slides[from];
+
+		// Add the new slide
+		Rooms.update(
+			{room: roomID},
+			{$push: {slides: {$each: [content], $position: to}}}
+		);
+
+		Meteor.call('rooms.deleteSlide', roomID, to < from ? from+1 : from);
 	}
 });

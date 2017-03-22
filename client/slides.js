@@ -53,6 +53,30 @@ Template.resource_video.events({
 	}
 });
 
+let sortableIndex = -1;
+
+Template.slides.rendered = function() {
+	this.$(".sortable").sortable({
+		start: function(e, ui) {
+			console.log("start");
+			sortableIndex = parseInt(ui.item.get(0).dataset.index);
+		},
+		stop: function(e, ui) {
+			console.log("stop");
+			var before = ui.item.prev().get(0);
+			var after = ui.item.next().get(0);
+
+			if(before === undefined && after === undefined) return;
+
+			let newIndex = after !== undefined ? parseInt(after.dataset.index) : parseInt(before.dataset.index) + 1;
+
+			Meteor.call('rooms.moveSlide', FlowRouter.getParam('roomID'), sortableIndex, newIndex);
+
+			return false;
+		}
+	});
+};
+
 Template.slides.helpers({
 	messages() {
 		// Get the full list of slides
@@ -147,8 +171,8 @@ Template.slides.events({
 		event.preventDefault();
 
 		const target = event.target;
-		const type   = target.type.value;
-		const text   = target.text.value;
+		const type	 = target.type.value;
+		const text	 = target.text.value;
 
 		Meteor.call('rooms.insertSlide', FlowRouter.getParam('roomID'), type, text);
 
