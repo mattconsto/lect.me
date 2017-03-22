@@ -97,8 +97,8 @@ Meteor.methods({
 		Meteor.call('rooms.isAuthor', roomID, this.userId);
 
 		// Horrible way to remove by index
-		Rooms.update({room: roomID}, {$unset: {["list." + slideNumber]: 1}})
-		Rooms.update({room: roomID}, {$pull: {list: null}})
+		Rooms.update({room: roomID}, {$unset: {["slides." + slideNumber]: 1}})
+		Rooms.update({room: roomID}, {$pull: {slides: null}})
 	},
 	'rooms.insertSlide'(roomID, type, data) {
 		// Check types and values

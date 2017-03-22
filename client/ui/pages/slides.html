@@ -49,7 +49,7 @@
 				{{#each messages}}
 				<div class="resource card">
 					<div class="card-content resource-title">
-						<button class="delete">&times;</button> {{text}}
+						<button class="delete" data-index="{{@index}}">&times;</button> {{text}}
 					</div>
 					<div class="card-image resource-contents">
 						{{> resourceTemplate}}

@@ -157,8 +157,9 @@ Template.slides.events({
 
 		$('pre:first code').each(function(i, block) {hljs.highlightBlock(block);});
 	},
-	'click .delete'() {
-		Meteor.call('rooms.deleteSlide', FlowRouter.getParam('roomID'), this._id);
+	'click .delete'(event) {
+		event.preventDefault();
+		Meteor.call('rooms.deleteSlide', FlowRouter.getParam('roomID'), parseInt(event.target.dataset.index));
 	},
 	'click .previous-card'(event) {
 		event.preventDefault();
