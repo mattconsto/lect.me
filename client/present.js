@@ -15,10 +15,10 @@ Template.present.onCreated(function() {
 	$(document).on('keyup', function(event) {
 		switch(event.which) {
 			case 37:
-				Meteor.call('rooms.navigate', FlowRouter.getParam('roomID'), -1);
+				Meteor.call('rooms.delta', FlowRouter.getParam('roomID'), -1);
 				break;
 			case 39:
-				Meteor.call('rooms.navigate', FlowRouter.getParam('roomID'), +1);
+				Meteor.call('rooms.delta', FlowRouter.getParam('roomID'), +1);
 				break;
 		}
 	});
@@ -38,10 +38,10 @@ Template.present.helpers({
 Template.present.events({
 	'click .previous-card'(event) {
 		event.preventDefault();
-		Meteor.call('rooms.navigate', FlowRouter.getParam('roomID'), -1);
+		Meteor.call('rooms.delta', FlowRouter.getParam('roomID'), -1);
 	},
 	'click .next-card'(event) {
 		event.preventDefault();
-		Meteor.call('rooms.navigate', FlowRouter.getParam('roomID'), +1);
+		Meteor.call('rooms.delta', FlowRouter.getParam('roomID'), +1);
 	}
 });

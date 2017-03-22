@@ -32,10 +32,10 @@ Template.slides.onCreated(function() {
 	$(document).on('keyup', function(event) {
 		switch(event.which) {
 			case 37:
-				Meteor.call('rooms.navigate', FlowRouter.getParam('roomID'), -1);
+				Meteor.call('rooms.delta', FlowRouter.getParam('roomID'), -1);
 				break;
 			case 39:
-				Meteor.call('rooms.navigate', FlowRouter.getParam('roomID'), +1);
+				Meteor.call('rooms.delta', FlowRouter.getParam('roomID'), +1);
 				break;
 		}
 	});
@@ -159,14 +159,18 @@ Template.slides.events({
 	},
 	'click .delete'(event) {
 		event.preventDefault();
-		Meteor.call('rooms.deleteSlide', FlowRouter.getParam('roomID'), parseInt(event.target.dataset.index));
+		Meteor.call('rooms.deleteSlide', FlowRouter.getParam('roomID'), parseInt(event.currentTarget.dataset.index));
 	},
 	'click .previous-card'(event) {
 		event.preventDefault();
-		Meteor.call('rooms.navigate', FlowRouter.getParam('roomID'), -1);
+		Meteor.call('rooms.delta', FlowRouter.getParam('roomID'), -1);
 	},
 	'click .next-card'(event) {
 		event.preventDefault();
-		Meteor.call('rooms.navigate', FlowRouter.getParam('roomID'), +1);
+		Meteor.call('rooms.delta', FlowRouter.getParam('roomID'), +1);
+	},
+	'click #card-container .card'(event) {
+		event.preventDefault();
+		Meteor.call('rooms.navigate', FlowRouter.getParam('roomID'), parseInt(event.currentTarget.dataset.index));
 	}
 });

@@ -47,7 +47,7 @@
 
 			<div id="card-container">
 				{{#each messages}}
-				<div class="resource card">
+				<div class="resource card" data-index="{{@index}}">
 					<div class="card-content resource-title">
 						<button class="delete" data-index="{{@index}}">&times;</button> {{text}}
 					</div>

@@ -28,12 +28,19 @@ Meteor.methods({
 		if(!Rooms.find({room: roomID}).fetch()[0].authors.includes(this.userId))
 			throw new Meteor.Error('not-an-author');
 	},
-	'rooms.navigate'(roomID, delta) {
+	'rooms.delta'(roomID, delta) {
 		Meteor.call('rooms.isAuthor', roomID, this.userId);
 
 		check(delta, Number);
 
 		Rooms.update({room: roomID}, {$inc: {slide: delta}});
+	},
+	'rooms.navigate'(roomID, slideNumber) {
+		Meteor.call('rooms.isAuthor', roomID, this.userId);
+
+		check(slideNumber, Number);
+
+		Rooms.update({room: roomID}, {$set: {slide: slideNumber}});
 	},
 	'rooms.create'(roomID, title) {
 		check(roomID, String);
