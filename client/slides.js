@@ -131,7 +131,8 @@ Template.slides.events({
 		console.log(event.target.files);
 
 		for(var i = 0; i < event.target.files.length; i++) {
-			Meteor.saveFileClient(event.target.files[0], event.target.files[0].name, undefined, undefined/*, function(error, result) {
+			Meteor.saveFileClient(event.target.files[0], event.target.files[0].name, undefined, undefined, function(error, result) {
+				let found = false;
 				console.log(arguments);
 				let url = require('url').parse(result);
 
@@ -156,7 +157,7 @@ Template.slides.events({
 				}
 
 				Meteor.call('rooms.insertSlide', FlowRouter.getParam('roomID'), extension, url.href);
-			}*/);
+			});
 		}
 	},
 	'submit #new-content'(event) {

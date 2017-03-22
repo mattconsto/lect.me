@@ -24,14 +24,13 @@ Meteor.methods({
 		path = '../../../../../../uploads/';
 		
 		// TODO Add file existance checks, etc...
-		fs.writeFile(path + checksum(blob) + "-" + name, blob, encoding, function(err) {
-			if (err) {
-				throw (new Meteor.Error(500, 'Failed to save file.', err));
-			} else {
-				console.log('The file ' + name + ' (' + encoding + ') was saved to ' + path);
-				return "/uploads" + checksum(blob) + "-" + name;
-			}
-		});
+		try {
+			fs.writeFileSync(path + checksum(blob) + "-" + name, blob, encoding);
+		} catch(e) {
+			throw new Meteor.Error(500, 'Failed to save file.', err);
+		}
+
+		return "/uploads/" + checksum(blob) + "-" + name;
 
 		function cleanPath(str) {
 			if (str) {
