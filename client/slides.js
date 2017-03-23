@@ -132,31 +132,32 @@ Template.slides.events({
 
 		for(var i = 0; i < event.target.files.length; i++) {
 			Meteor.saveFileClient(event.target.files[0], event.target.files[0].name, undefined, undefined, function(error, result) {
-				let found = false;
-				console.log(arguments);
-				let url = require('url').parse(result);
+				for(r in result) {
+					let found = false;
+					let url = require('url').parse(result[r]);
 
-				// See if the url is in the database
-				for(var regexp in urlReplacements) {
-					let match = new RegExp(regexp).exec(url.href);
-					if(match) {
-						url = url.parse(require('sprintf-js').vsprintf(urlReplacements[regexp], match));
-						found = true;
-						break;
+					// See if the url is in the database
+					for(var regexp in urlReplacements) {
+						let match = new RegExp(regexp).exec(url.href);
+						if(match) {
+							url = url.parse(require('sprintf-js').vsprintf(urlReplacements[regexp], match));
+							found = true;
+							break;
+						}
 					}
-				}
 
-				// Identify the correct extension
-				let extension = 'webpage';
-				if(!found) {
-					let parsed = url.pathname.split('/').pop().split('.');
-					if(parsed.length > 1 && extensionBlacklist[parsed[parsed.length-1]].toLowerCase()) {
-						extension = extensionBlacklist[parsed[parsed.length-1]].toLowerCase();
-						console.log('Found extension: ' + extension);
+					// Identify the correct extension
+					let extension = 'webpage';
+					if(!found) {
+						let parsed = url.pathname.split('/').pop().split('.');
+						if(parsed.length > 1 && extensionBlacklist[parsed[parsed.length-1]].toLowerCase()) {
+							extension = extensionBlacklist[parsed[parsed.length-1]].toLowerCase();
+							console.log('Found extension: ' + extension);
+						}
 					}
-				}
 
-				Meteor.call('rooms.insertSlide', FlowRouter.getParam('roomID'), extension, url.href);
+					Meteor.call('rooms.insertSlide', FlowRouter.getParam('roomID'), extension, url.href);
+				}
 			});
 		}
 	},
