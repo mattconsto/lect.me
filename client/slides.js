@@ -16,7 +16,6 @@ Template.slides.onCreated(function() {
 	// // this.autorun(() => {
 	// 	messagelist = Meteor.subscribe('messages.retrieve', FlowRouter.getParam('roomID'), lastTimestamp);
 	// // });
-	// console.log(messagelist);
 
 	// messagelist.find().observeChanges({
 	// 	added: function (newDoc) {
@@ -58,11 +57,9 @@ let sortableIndex = -1;
 Template.slides.rendered = function() {
 	this.$(".sortable").sortable({
 		start: function(e, ui) {
-			console.log("start");
 			sortableIndex = parseInt(ui.item.get(0).dataset.index);
 		},
 		stop: function(e, ui) {
-			console.log("stop");
 			var before = ui.item.prev().get(0);
 			var after = ui.item.next().get(0);
 
@@ -126,10 +123,6 @@ Template.slides.events({
 	},
 	'change #new-upload input[type="file"]'(event) {
 		event.preventDefault();
-		console.log("Uploading");
-
-		console.log(event.target.files);
-
 		for(var i = 0; i < event.target.files.length; i++) {
 			Meteor.saveFileClient(event.target.files[0], event.target.files[0].name, undefined, undefined, function(error, result) {
 				for(r in result) {
