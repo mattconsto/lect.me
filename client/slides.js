@@ -8,25 +8,27 @@ import { urlReplacements } from './replacements.js';
 
 let lastTimestamp = new Date();
 
-let messagelist = {};
+// let messagelist = {};
 
 Template.slides.onCreated(function() {
 	Meteor.subscribe('rooms');
 
 	// // this.autorun(() => {
-	// 	messagelist = Meteor.subscribe('messages.retrieve', FlowRouter.getParam('roomID'), lastTimestamp);
+	// 	messagelist = Meteor.subscribe('messages', FlowRouter.getParam('roomID'), lastTimestamp);
 	// // });
 
-	// messagelist.find().observeChanges({
-	// 	added: function (newDoc) {
-	// 		console.log("doc added: " + newDoc);
-	// 	}
-	// });
+	// console.log(messagelist);
 
 	if(Rooms.find({room: FlowRouter.getParam('roomID')}).count() <= 0) {
 		console.log("Creating a new room: " + FlowRouter.getParam('roomID'));
 		Meteor.call('rooms.create', FlowRouter.getParam('roomID'), "Untitled");
 	}
+	
+	// Meteor.subscribe('messages', FlowRouter.getParam('roomID'), lastTimestamp).observeChanges({
+	// 	added: function(id, entry) {
+	// 		console.log(entry);
+	// 	}
+	// });
 
 	$(document).on('keyup', function(event) {
 		switch(event.which) {
@@ -44,12 +46,8 @@ Template.slides.onCreated(function() {
 	// 	video.addEventListener('seeked', function(event) {
 
 Template.resource_video.events({
-	'video play'(event) {
-		Meteor.call('messages.send', FlowRouter.getParam('roomID'), 'play');
-	},
-	'video pause'(event) {
-		Meteor.call('messages.send', FlowRouter.getParam('roomID'), 'pause');
-	}
+	'play video'(event)  {Meteor.call('messages.send', FlowRouter.getParam('roomID'), [event.currentTarget.localName, event.type]);},
+	'pause video'(event) {Meteor.call('messages.send', FlowRouter.getParam('roomID'), [event.currentTarget.localName, event.type]);},
 });
 
 let sortableIndex = -1;

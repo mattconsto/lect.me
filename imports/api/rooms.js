@@ -61,6 +61,8 @@ Meteor.methods({
 			status:       "presenting",
 			private:      false,
 		})
+
+		Rooms.update({room: roomID}, {$push: {slides: {type: 'title', data: ''}}});
 	},
 	'rooms.addAuthor'(roomID, authorID) {
 		Meteor.call('rooms.isAuthor', roomID, this.userId);

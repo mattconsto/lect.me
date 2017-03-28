@@ -1,7 +1,7 @@
 <template name="header">
 	<nav class="white" role="navigation">
 		<div class="nav-wrapper{{#if container}} container{{/if}}">
-			<a id="logo-container" href="/pages/index" class="brand-logo">Educast</a>
+			<a id="logo-container" href="/pages/index" class="brand-logo">{{settings "name"}}</a>
 			<ul class="right hide-on-med-and-down">
 				<li>{{> loginButtons}}</li>
 				<li><a href="/pages/about">About</a></li>
