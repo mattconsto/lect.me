@@ -1,6 +1,3 @@
-import { Meteor } from 'meteor/meteor';
-import { Template } from 'meteor/templating';
-
 import { Rooms } from '/imports/api/rooms.js';
 import '/imports/api/messages.js';
 import { extensionBlacklist } from './blacklist.js';
@@ -81,10 +78,6 @@ Template.slides.helpers({
 		// Get the current slide with the stored offset, it loops.
 		let results = Rooms.find({room: FlowRouter.getParam('roomID')}).fetch()[0];
 		return results.slides.length > 0 ? results.slides[results.slide % (results.slides.length + 1)] : null;
-	},
-	resourceTemplate() {
-		// Fallback to undefined if given an invalid resource.
-		return Template["resource_" + this.type] ? Template["resource_" + this.type] : Template["resource_undefined"];
 	}
 });
 

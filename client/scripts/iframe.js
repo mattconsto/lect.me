@@ -1,5 +1,3 @@
-import { Meteor } from 'meteor/meteor';
-
 /* Detect if we are running in an iframe */
 const iframe = function () {
 	try {
