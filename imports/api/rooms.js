@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
-const validTypes = ['text', 'webpage', 'picture', 'audio', 'video', 'pdf', 'document', 'whiteboard', 'blackboard'];
+const validTypes = ['text', 'webpage', 'picture', 'audio', 'video', 'pdf', 'whiteboard', 'blackboard'];
 
 export const Rooms = new Mongo.Collection('rooms');
 

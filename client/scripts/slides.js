@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 
-import { Rooms } from '../imports/api/rooms.js';
-import '../imports/api/messages.js';
+import { Rooms } from '/imports/api/rooms.js';
+import '/imports/api/messages.js';
 import { extensionBlacklist } from './blacklist.js';
 import { urlReplacements } from './replacements.js';
 

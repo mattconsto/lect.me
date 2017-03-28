@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 
-import { Rooms } from '../imports/api/rooms.js';
+import { Rooms } from '/imports/api/rooms.js';
 
 Template.present.onCreated(function() {
 	Meteor.subscribe('rooms');
