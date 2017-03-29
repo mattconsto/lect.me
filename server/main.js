@@ -35,12 +35,12 @@ process_exec_sync = function (command) {
 
 Meteor.methods({
 	saveFileServer: function(blob, name) {
-		let chroot    = Meteor.chroot || 'public';
-		var name      = Sanitizer.file(name || 'file');
-		let ext = /(?:\.([^.]+))?$/.exec(name)[1].toLowerCase().replace(/[^a-z0-9_-]/, "") || "";
-		let check     = checksum(blob);
-		let path      = '../../../../../../uploads/' + check + (ext != "" ? "." + ext : "");
-		let url       = "/uploads/" + check + (ext != "" ? "." + ext : "");
+		let chroot = Meteor.chroot || 'public';
+		var name   = Sanitizer.file(name || 'file');
+		let ext    = /(?:\.([^.]+))?$/.exec(name)[1].toLowerCase().replace(/[^a-z0-9_-]/, "") || "";
+		let check  = checksum(blob);
+		let path   = '../../../../../../uploads/' + check + (ext != "" ? "." + ext : "");
+		let url    = ["/uploads/" + check + (ext != "" ? "." + ext : "")];
 		
 		// TODO Add file existance checks, etc...
 		try {
@@ -52,17 +52,21 @@ Meteor.methods({
 		// Handle office documents, convert if extension matches
 		if(['kth', 'key', 'numbers', 'pages', 'xls', 'xlw', 'xlt', 'xlsx', 'docx', 'pptx', 'ppt', 'pps', 'pot', 'rtf', 'doc', 'dot', 'wri', 'vsd', 'odt', 'fodt', 'ods', 'fods', 'odp', 'fodp', 'odg', 'fodg', 'odf', 'sxw', 'stw', 'sxc', 'stc', 'sxi', 'sti', 'sxd', 'std', 'sxm', 'psd', 'uof', 'uot', 'uos', 'uop', 'wpd', 'wps'].indexOf(ext) !== -1) {
 			Meteor.call('convertDocument', checksum(blob), (ext != "" ? ext : ""), function(err, res) {
-				// check result
 				if (err) {
 					// Do some error notification
 				} else {
-					// Do some success action
+					// Build the list of split files
+					if(pages > 1) {
+						url = [];
+						for(var i = 1; i <= res; i++) {
+							url.push(require('sprintf-js').sprintf("/uploads/" + check + "_%05d.pdf", i));
+						}
+					}
 				}
 			});
-			url = "/uploads/" + check + ".pdf";
 		}
 
-		return [url];
+		return url;
 	},
 	convertDocument: function(file, ext) {
 		// This method call won't return immediately, it will wait for the
@@ -71,9 +75,19 @@ Meteor.methods({
 		this.unblock();
 
 		// run synchonous system command
-		var result = process_exec_sync('cd ../../../../../../uploads/ && soffice --convert-to pdf '+file+'.'+ext+' '+file+'.pdf --headless && pdftk '+file+'.pdf burst output '+file+'_%04d.pdf dont_ask');
-		if (result.error) throw new Meteor.Error("exec-fail", "Error converting: " + result.error.message);
+		var r1 = process_exec_sync('cd ../../../../../../uploads/ && soffice --convert-to pdf '+file+'.'+ext+' '+file+'.pdf --headless');
+		if (r1.error) throw new Meteor.Error("exec-fail", "Error converting: " + r1.error.message);
 
-		return true;
+		var r2 = process_exec_sync('cd ../../../../../../uploads/ && pdftk '+file+'.pdf dump_data | grep NumberOfPages');
+		if (r2.error) throw new Meteor.Error("exec-fail", "Error dumping: " + r2.error.message);
+
+		var pages = parseInt(r2.stdout.replace(/[^0-9]/g, ""));
+
+		if(pages == 1) return pages;
+
+		var r3 = process_exec_sync('cd ../../../../../../uploads/ && pdftk '+file+'.pdf burst output '+file+'_%05d.pdf compress dont_ask');
+		if (r3.error) throw new Meteor.Error("exec-fail", "Error bursting: " + r3.error.message);
+
+		return pages;
 	}
 });
