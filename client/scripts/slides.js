@@ -85,7 +85,11 @@ Template.slides.events({
 	'submit #new-hyperlink'(event) {
 		event.preventDefault();
 
-		let url = require('url').parse(event.target.hyperlink.value);
+		// Ensure the url has a protocol
+		let temp = event.target.hyperlink.value;
+		if(!temp.startsWith("http:") && !temp.startsWith("https:")) temp = "http://" + temp.replace(/^[a-zA-Z]+:(\\\/)*/, "");
+		let url = require('url').parse(temp);
+
 		let found = false;
 
 		// See if the url is in the database
@@ -101,6 +105,7 @@ Template.slides.events({
 		// Identify the correct extension
 		let extension = 'webpage';
 		if(!found) {
+			console.log(url);
 			let parsed = url.pathname.split('/').pop().split('.');
 			if(parsed.length > 1 && extensionBlacklist[parsed[parsed.length-1]].toLowerCase()) {
 				extension = extensionBlacklist[parsed[parsed.length-1]].toLowerCase();

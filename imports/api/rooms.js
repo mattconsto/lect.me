@@ -16,6 +16,9 @@ if(Meteor.isServer) {
 }
 
 Meteor.methods({
+	'rooms.byAuthor'(authorID) {
+
+	},
 	'rooms.exists'(roomID) {
 		check(roomID, String);
 
