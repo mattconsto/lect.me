@@ -120,7 +120,7 @@ Template.slides.events({
 	'change #new-upload input[type="file"]'(event) {
 		event.preventDefault();
 		for(var i = 0; i < event.target.files.length; i++) {
-			Meteor.saveFileClient(event.target.files[0], event.target.files[0].name, undefined, undefined, function(error, result) {
+			Meteor.saveFileClient(event.target.files[0], event.target.files[0].name, function(error, result) {
 				for(r in result) {
 					let found = false;
 					let url = require('url').parse(result[r]);
