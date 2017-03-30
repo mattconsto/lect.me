@@ -1,10 +1,31 @@
+import { Random } from 'meteor/random'
 import { Sanitizer } from '../lib/sanitizer.js';
 import { Settings } from '../lib/settings.js';
 import '../imports/startup/accounts-config.js';
 
+// Pick a random sessionID
+sessionID = Random.id();
+
+Template.resource_audio.events({
+	'abort audio, pause audio, play audio, stalled audio' (event) {
+		if(event.hasOwnProperty('originalEvent'))
+			Meteor.call('messages.send', FlowRouter.getParam('roomID'), sessionID, [event.currentTarget.localName, event.type, []]);
+	},
+	'seeked audio' (event) {
+		if(event.hasOwnProperty('originalEvent'))
+			Meteor.call('messages.send', FlowRouter.getParam('roomID'), sessionID, [event.currentTarget.localName, event.type, event.target.currentTime]);
+	},
+});
+
 Template.resource_video.events({
-	'play video'(event)  {Meteor.call('messages.send', FlowRouter.getParam('roomID'), [event.currentTarget.localName, event.type]);},
-	'pause video'(event) {Meteor.call('messages.send', FlowRouter.getParam('roomID'), [event.currentTarget.localName, event.type]);},
+	'abort video, pause video, play video, stalled video' (event) {
+		if(event.hasOwnProperty('originalEvent'))
+			Meteor.call('messages.send', FlowRouter.getParam('roomID'), sessionID, [event.currentTarget.localName, event.type, []]);
+	},
+	'seeked video' (event) {
+		if(event.hasOwnProperty('originalEvent'))
+			Meteor.call('messages.send', FlowRouter.getParam('roomID'), sessionID, [event.currentTarget.localName, event.type, event.target.currentTime]);
+	},
 });
 
 Meteor.saveFileClient = function(blob, name, callback) {

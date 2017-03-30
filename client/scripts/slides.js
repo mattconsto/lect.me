@@ -4,8 +4,9 @@ import { extensionBlacklist } from './blacklist.js';
 import { urlReplacements } from './replacements.js';
 
 Template.slides.onCreated(function() {
+	console.log(sessionID);
 	Meteor.subscribe('rooms');
-	Meteor.subscribe('messages', FlowRouter.getParam('roomID'));
+	Meteor.subscribe('messages', FlowRouter.getParam('roomID'), sessionID);
 
 	if(Rooms.find({room: FlowRouter.getParam('roomID')}).count() <= 0) {
 		console.log("Creating a new room: " + FlowRouter.getParam('roomID'));
@@ -13,7 +14,7 @@ Template.slides.onCreated(function() {
 	}
 	
 	// Subscribe to changes
-	Messages.find({room: FlowRouter.getParam('roomID')}).observeChanges({
+	Messages.find({room: FlowRouter.getParam('roomID'), sessionID: {$ne: sessionID}}).observeChanges({
 		added: function(id, entry) {
 			console.log(entry);
 		}
