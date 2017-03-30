@@ -1,31 +1,23 @@
 import { Rooms } from '/imports/api/rooms.js';
-import '/imports/api/messages.js';
+import { Messages } from '/imports/api/messages.js';
 import { extensionBlacklist } from './blacklist.js';
 import { urlReplacements } from './replacements.js';
 
-let lastTimestamp = new Date();
-
-// let messagelist = {};
-
 Template.slides.onCreated(function() {
 	Meteor.subscribe('rooms');
-
-	// // this.autorun(() => {
-	// 	messagelist = Meteor.subscribe('messages', FlowRouter.getParam('roomID'), lastTimestamp);
-	// // });
-
-	// console.log(messagelist);
+	Meteor.subscribe('messages', FlowRouter.getParam('roomID'));
 
 	if(Rooms.find({room: FlowRouter.getParam('roomID')}).count() <= 0) {
 		console.log("Creating a new room: " + FlowRouter.getParam('roomID'));
 		Meteor.call('rooms.create', FlowRouter.getParam('roomID'), "Untitled");
 	}
 	
-	// Meteor.subscribe('messages', FlowRouter.getParam('roomID'), lastTimestamp).observeChanges({
-	// 	added: function(id, entry) {
-	// 		console.log(entry);
-	// 	}
-	// });
+	// Subscribe to changes
+	Messages.find({room: FlowRouter.getParam('roomID')}).observeChanges({
+		added: function(id, entry) {
+			console.log(entry);
+		}
+	});
 
 	$(document).on('keyup', function(event) {
 		switch(event.which) {
@@ -37,14 +29,6 @@ Template.slides.onCreated(function() {
 				break;
 		}
 	});
-});
-
-	// 	video.addEventListener('ratechange', function(event) {
-	// 	video.addEventListener('seeked', function(event) {
-
-Template.resource_video.events({
-	'play video'(event)  {Meteor.call('messages.send', FlowRouter.getParam('roomID'), [event.currentTarget.localName, event.type]);},
-	'pause video'(event) {Meteor.call('messages.send', FlowRouter.getParam('roomID'), [event.currentTarget.localName, event.type]);},
 });
 
 let sortableIndex = -1;
@@ -77,7 +61,7 @@ Template.slides.helpers({
 	slide() {
 		// Get the current slide with the stored offset, it loops.
 		let results = Rooms.find({room: FlowRouter.getParam('roomID')}).fetch()[0];
-		return results.slides.length > 0 ? results.slides[results.slide % (results.slides.length + 1)] : null;
+		return results !== undefined && results.slides.length > 0 ? results.slides[results.slide % (results.slides.length + 1)] : null;
 	}
 });
 

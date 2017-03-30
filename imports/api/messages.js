@@ -2,13 +2,13 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
-export const Messages = new Mongo.Collection('messages', {connection: null});
+export const Messages = new Mongo.Collection('messages');
 
 if(Meteor.isServer) {
 	// Runs only on the server
-	Meteor.publish('messages', function(roomID, timestamp) {
+	Meteor.publish('messages', function(roomID) {
 		check(roomID, String);
-		return Messages.find({room: roomID, userID: {$ne: this.userId}, timesamp: {$gt: timestamp}});
+		return Messages.find({room: roomID, timestamp: {$gt: new Date()}});
 	});
 }
 
