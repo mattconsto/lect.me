@@ -4,6 +4,8 @@ import '../imports/api/rooms.js';
 import '../imports/api/messages.js';
 import { Sanitizer } from '../lib/sanitizer.js';
 
+import { extensionBlacklist } from '../imports/blacklist.js';
+
 Meteor.startup(() => {
 	// code to run on server at startup
 });
@@ -43,6 +45,11 @@ Meteor.methods({
 		let path   = '../../../../../../uploads/' + check + (ext != "" ? "." + ext : "");
 		let url    = ["/uploads/" + check + (ext != "" ? "." + ext : "")];
 		
+		// Check the extension is safe
+		if(extensionBlacklist[extension] === undefined || extensionBlacklist[extension] == "invalid") {
+			throw new Meteor.Error("invalid-extension", "");
+		}
+
 		// TODO Add file existance checks, etc...
 		try {
 			require('fs').writeFileSync(path, blob, "binary");
