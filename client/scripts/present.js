@@ -15,11 +15,33 @@ Template.present.onCreated(function() {
 	// Subscribe to changes
 	Messages.find({room: FlowRouter.getParam('roomID'), sessionID: {$ne: sessionID}}).observeChanges({
 		added: function(id, entry) {
-			console.log(entry);
-			switch(entry.message[0] + "-" + entry.message[1]) {
-				case "audio-seeked":
-				case "video-seeked":
-					$(entry.message[0])[0].currentTime = entry.message[2];
+			// console.log("Received " + entry.message[1] + ", lag: " + (new Date() - entry.timestamp) + "ms");
+			switch(entry.message[1]) {
+				case "mousedown":
+					$('#cursor').css('filter', 'invert(100%)');
+					break;
+				case "mousemove":
+					console.log(entry.message[2][0] * $(entry.message[0]).css('width') + " " + entry.message[2][1] * $(entry.message[0]).css('height'));
+					$('#cursor').css('left', entry.message[2][0] * $(entry.message[0]).css('width'));
+					$('#cursor').css('top',  entry.message[2][1] * $(entry.message[0]).css('height'));
+					break;
+				case "mouseup":
+					$('#cursor').css('filter', 'none');
+					break;
+				case "pause":
+					$(entry.message[0])[0].currentTime = entry.message[2] - (new Date() - entry.timestamp) / 1000;
+					$(entry.message[0]).trigger(entry.message[1]);
+					break;
+				case "play":
+					$(entry.message[0])[0].currentTime = entry.message[2] + (new Date() - entry.timestamp) / 1000;
+					$(entry.message[0]).trigger(entry.message[1]);
+					break;
+				case "seeked":
+					if($(entry.message[0])[0].paused) {
+						$(entry.message[0])[0].currentTime = entry.message[2];
+					} else {
+						$(entry.message[0])[0].currentTime = entry.message[2] + (new Date() - entry.timestamp) / 1000;
+					}
 					break;
 				default:
 					$(entry.message[0]).trigger(entry.message[1]);

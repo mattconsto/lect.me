@@ -17,8 +17,12 @@ if(Meteor.isServer) {
 Meteor.methods({
 	'messages.send'(roomID, sessionID, message) {
 		check(roomID, String);
-		Meteor.call('rooms.isAuthor', roomID, this.userId);
-		
-		Messages.insert({room: roomID, sessionID: sessionID, message: message, timestamp: new Date()});
+
+		try {
+			Meteor.call('rooms.isAuthor', roomID, this.userId);
+			Messages.insert({room: roomID, sessionID: sessionID, message: message, timestamp: new Date()});
+		} catch(exception) {
+			// Ignored
+		}
 	}
 });

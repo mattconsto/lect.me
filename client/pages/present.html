@@ -1,11 +1,12 @@
 <template name="present">
+	<div id="cursor"></div>
 	<div class="container" style="height: 100%;">
 		<div class="resource" style="height: 100%;">
 			<div class="resource-contents" style="height: 100%;">
 				<a href="#" class="previous-card" style="position: fixed; left: 0; bottom: 0; width: 100px; height: 100px;">
 					<button class="waves-effect waves-light btn white-text teal">&lt;</button>
 				</a>
-				{{> Template.dynamic template=(concat "resource_" slide.type) data=slide}}
+				{{> resource type=slide.type data=slide}}
 				<a href="#" class="next-card" style="position: fixed; right: 0; bottom: 0; width: 100px; height: 100px;">
 					<button class="waves-effect waves-light btn white-text teal">&gt;</button>
 				</a>

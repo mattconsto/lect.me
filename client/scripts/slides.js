@@ -1,6 +1,6 @@
 import { Rooms } from '/imports/api/rooms.js';
 import { Messages } from '/imports/api/messages.js';
-import { extensionBlacklist } from '../imports/blacklist.js';
+import { extensionBlacklist } from '/imports/blacklist.js';
 import { urlReplacements } from './replacements.js';
 
 Template.slides.onCreated(function() {

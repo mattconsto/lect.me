@@ -46,7 +46,7 @@
 						<button class="delete" data-index="{{@index}}">&times;</button> {{message.text}}
 					</div>
 					<div class="card-image resource-contents">
-						{{> Template.dynamic template=(concat "resource_" message.type) data=message}}
+						{{> resource type=message.type data=message}}
 					</div>
 				</div>
 				{{/each}}
@@ -55,7 +55,7 @@
 		<div class="col s3 m6 l9" style="height: 100%; overflow: hidden; background: black;">
 			<div class="resource" style="height: 100%;">
 				<div class="resource-contents" style="height: 100%;">
-					{{> Template.dynamic template=(concat "resource_" slide.type) data=slide}}
+					{{> resource type=slide.type data=slide}}
 				</div>
 			</div>
 		</div>

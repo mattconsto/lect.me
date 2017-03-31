@@ -6,23 +6,24 @@ import '../imports/startup/accounts-config.js';
 // Pick a random sessionID
 sessionID = Random.id();
 
-Template.resource_audio.events({
-	'abort audio, pause audio, play audio, stalled audio' (event) {
-		if(event.hasOwnProperty('originalEvent'))
-			Meteor.call('messages.send', FlowRouter.getParam('roomID'), sessionID, [event.currentTarget.localName, event.type, []]);
+Template.resource.events({
+	'mousedown, mouseup' (event) {
+		Meteor.call('messages.send', FlowRouter.getParam('roomID'), sessionID, [event.currentTarget.localName, event.type, []]);
 	},
-	'seeked audio' (event) {
+	'mousemove' (event) {
+		Meteor.call('messages.send', FlowRouter.getParam('roomID'), sessionID, [event.currentTarget.localName, event.type, [event.offsetX/event.currentTarget.width, event.offsetY/event.currentTarget.height]]);
+	}
+})
+
+Template.resource_audio.events({
+	'abort audio, pause audio, play audio, stalled audio, seeked audio' (event) {
 		if(event.hasOwnProperty('originalEvent'))
 			Meteor.call('messages.send', FlowRouter.getParam('roomID'), sessionID, [event.currentTarget.localName, event.type, event.target.currentTime]);
 	},
 });
 
 Template.resource_video.events({
-	'abort video, pause video, play video, stalled video' (event) {
-		if(event.hasOwnProperty('originalEvent'))
-			Meteor.call('messages.send', FlowRouter.getParam('roomID'), sessionID, [event.currentTarget.localName, event.type, []]);
-	},
-	'seeked video' (event) {
+	'abort video, pause video, play video, stalled video, seeked video' (event) {
 		if(event.hasOwnProperty('originalEvent'))
 			Meteor.call('messages.send', FlowRouter.getParam('roomID'), sessionID, [event.currentTarget.localName, event.type, event.target.currentTime]);
 	},
