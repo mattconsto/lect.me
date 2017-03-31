@@ -6,6 +6,13 @@ import '../imports/startup/accounts-config.js';
 // Pick a random sessionID
 sessionID = Random.id();
 
+Template.page_index.events({
+	"submit #room-select" (event) {
+		event.preventDefault();
+		if(event.target.room_id.value != "") FlowRouter.redirect('/show/' + event.target.room_id.value);
+	}
+});
+
 Template.resource.events({
 	'mousedown, mouseup' (event) {
 		Meteor.call('messages.send', FlowRouter.getParam('roomID'), sessionID, [event.currentTarget.localName, event.type, []]);

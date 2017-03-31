@@ -4,22 +4,21 @@
 			<div class="container">
 				<h1 class="header center teal-text text-lighten-2">{{settings "name"}}</h1>
 				<div class="row center">
-					<h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
+					<h5 class="header col s12 light">A collaborative, meta-slideshow.</h5>
 				</div>
-				<div class="row center">
-					<a href="/rooms" id="download-button" class="btn-large waves-effect waves-light teal lighten-1">Get Started</a>
-				</div>
-				<div class="card row center">
-					<div class="col s4">
-						#
+				<form id="room-select">
+					<div class="card row center">
+						<div class="col s4">
+							#
+						</div>
+						<div class="col s4">
+							<input placeholder="Room Name" id="room_id" type="text" class="validate">
+						</div>
+						<div class="col s4">
+							<input type="submit" class="btn-large waves-effect waves-light teal lighten-1" value="Join a Room" />
+						</div>
 					</div>
-					<div class="col s4">
-						<input placeholder="Room Name" id="room_id" type="text" class="validate">
-					</div>
-					<div class="col s4">
-						<a href="/rooms" id="download-button" class="btn-large waves-effect waves-light teal lighten-1">Join a Room</a>
-					</div>
-				</div>
+				</form>
 			</div>
 		</div>
 		<div class="parallax"><img src="/background1.jpg" alt="Unsplashed background img 1"></div>

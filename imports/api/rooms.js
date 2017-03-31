@@ -10,7 +10,7 @@ if(Meteor.isServer) {
 	// Runs only on the server
 	Meteor.publish('rooms', function() {
 		return Rooms.find({
-			$or: [{private: {$ne: true}}, {authors: this.userId}]
+			$or: [{private: false}, {authors: this.userId}]
 		});
 	});
 }

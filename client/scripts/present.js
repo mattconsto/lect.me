@@ -7,6 +7,9 @@ Template.present.onCreated(function() {
 	Meteor.subscribe('messages', FlowRouter.getParam('roomID'), sessionID);
 	$('html').attr('fullscreen', true);
 
+	Meteor.call('rooms.exists', FlowRouter.getParam('roomID'));
+
+	console.log(Rooms.find({room: FlowRouter.getParam('roomID')}).fetch());
 	if(Rooms.find({room: FlowRouter.getParam('roomID')}).count() <= 0) {
 		console.log("Creating a new room: " + FlowRouter.getParam('roomID'));
 		Meteor.call('rooms.create', FlowRouter.getParam('roomID'), "Untitled");
@@ -21,7 +24,7 @@ Template.present.onCreated(function() {
 					$('#cursor').css('filter', 'invert(100%)');
 					break;
 				case "mousemove":
-					console.log(entry.message[2][0] * $(entry.message[0]).css('width') + " " + entry.message[2][1] * $(entry.message[0]).css('height'));
+					// console.log(entry.message[2][0] * $(entry.message[0]).css('width') + " " + entry.message[2][1] * $(entry.message[0]).css('height'));
 					$('#cursor').css('left', entry.message[2][0] * $(entry.message[0]).css('width'));
 					$('#cursor').css('top',  entry.message[2][1] * $(entry.message[0]).css('height'));
 					break;
