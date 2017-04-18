@@ -5,19 +5,15 @@ Template.present.onCreated(function() {
 	console.log(sessionID);
 	Meteor.subscribe('rooms');
 	Meteor.subscribe('messages', FlowRouter.getParam('roomID'), sessionID);
-	$('html').attr('fullscreen', true);
 
-	Meteor.call('rooms.exists', FlowRouter.getParam('roomID'));
-
-	console.log(Rooms.find({room: FlowRouter.getParam('roomID')}).fetch());
-	if(Rooms.find({room: FlowRouter.getParam('roomID')}).count() <= 0) {
-		console.log("Creating a new room: " + FlowRouter.getParam('roomID'));
-		Meteor.call('rooms.create', FlowRouter.getParam('roomID'), "Untitled");
-	}
+	// Horrible hack, try creating a room, and redirect if it DOESN'T error.
+	Meteor.call('rooms.create', FlowRouter.getParam('roomID'), "Untitled", (error, result) => {
+		if(!error) FlowRouter.redirect("/show/" + FlowRouter.getParam('roomID') + "/edit");
+	});
 
 	// Subscribe to changes
 	Messages.find({room: FlowRouter.getParam('roomID'), sessionID: {$ne: sessionID}}).observeChanges({
-		added: function(id, entry) {
+		added: (id, entry) => {
 			// console.log("Received " + entry.message[1] + ", lag: " + (new Date() - entry.timestamp) + "ms");
 			switch(entry.message[1]) {
 				case "mousedown":
@@ -52,27 +48,29 @@ Template.present.onCreated(function() {
 		}
 	});
 
-	$(document).on('keyup', function(event) {
+	$(document).on('keyup', (event) => {
 		switch(event.which) {
 			case 37: Meteor.call('rooms.delta', FlowRouter.getParam('roomID'), -1); break;
 			case 39: Meteor.call('rooms.delta', FlowRouter.getParam('roomID'), +1); break;
 		}
 	});
+
+	$('html').attr('fullscreen', true);
 });
 
 Template.present.helpers({
-	slide() {
+	slide: () => {
 		let results = Rooms.find({room: FlowRouter.getParam('roomID')}).fetch()[0];
 		return results !== undefined && results.slides.length > 0 ? results.slides[results.slide % (results.slides.length + 1)] : null;
 	}
 });
 
 Template.present.events({
-	'click .previous-card'(event) {
+	'click .previous-card': (event) => {
 		event.preventDefault();
 		Meteor.call('rooms.delta', FlowRouter.getParam('roomID'), -1);
 	},
-	'click .next-card'(event) {
+	'click .next-card': (event) => {
 		event.preventDefault();
 		Meteor.call('rooms.delta', FlowRouter.getParam('roomID'), +1);
 	}

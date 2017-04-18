@@ -8,7 +8,7 @@ const iframe = function () {
 }
 
 /* Provide a helper */
-Template.registerHelper('iframe', () => iframe());
+Template.registerHelper('iframe', iframe);
 
 /* Try to break out */
 if(iframe()) top.location = self.location.href;

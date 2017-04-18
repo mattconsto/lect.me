@@ -16,19 +16,19 @@ if(Meteor.isServer) {
 }
 
 Meteor.methods({
-	'rooms.byAuthor'(authorID) {
+	// 'rooms.byAuthor'(authorID) {
 
-	},
+	// },
 	'rooms.exists'(roomID) {
 		check(roomID, String);
 
-		if(Rooms.find({room: roomID}).count() <= 0)
+		if(!(Rooms.find({room: roomID}).count() > 0))
 			throw new Meteor.Error('room-doesnt-exist');
 	},
-	'rooms.isAuthor'(roomID, userID) {
+	'rooms.isAuthor'(roomID, userId) {
 		Meteor.call('rooms.exists', roomID);
 
-		if(!Rooms.find({room: roomID}).fetch()[0].authors.includes(this.userId))
+		if(!Rooms.find({room: roomID}).fetch()[0].authors.includes(userId))
 			throw new Meteor.Error('not-an-author');
 	},
 	'rooms.delta'(roomID, delta) {
@@ -119,7 +119,7 @@ Meteor.methods({
 
 		Meteor.call('rooms.isAuthor', roomID, this.userId);
 
-		Rooms.update({room: roomID}, {$push: {slides: {type: type, data: data}}});
+		Rooms.update({room: roomID}, {$push: {slides: { $each: [{type: type, data: data}], $position: Rooms.find({room: roomID}).fetch()[0].slide+1}}});
 	},
 	'rooms.moveSlide'(roomID, from, to) {
 		check(from, Number);

@@ -7,11 +7,15 @@ Template.slides.onCreated(function() {
 	console.log(sessionID);
 	Meteor.subscribe('rooms');
 	Meteor.subscribe('messages', FlowRouter.getParam('roomID'), sessionID);
+	$('html').attr('fullscreen', false);
 
-	if(Rooms.find({room: FlowRouter.getParam('roomID')}).count() <= 0) {
-		console.log("Creating a new room: " + FlowRouter.getParam('roomID'));
-		Meteor.call('rooms.create', FlowRouter.getParam('roomID'), "Untitled");
-	}
+	Meteor.call('rooms.create', FlowRouter.getParam('roomID'), "Untitled");
+	// Meteor.call('rooms.create', FlowRouter.getParam('roomID'), "Untitled", (error, result) => {
+	// 	Meteor.call('rooms.isAuthor', FlowRouter.getParam('roomID'), (error, result) => {
+	// 		console.log(error);
+	// 		console.log(result);
+	// 	});
+	// });
 	
 	// Subscribe to changes
 	Messages.find({room: FlowRouter.getParam('roomID'), sessionID: {$ne: sessionID}}).observeChanges({
@@ -36,10 +40,10 @@ let sortableIndex = -1;
 
 Template.slides.rendered = function() {
 	this.$(".sortable").sortable({
-		start: function(e, ui) {
+		start: (e, ui) => {
 			sortableIndex = parseInt(ui.item.get(0).dataset.index);
 		},
-		stop: function(e, ui) {
+		stop: (e, ui) => {
 			var before = ui.item.prev().get(0);
 			var after = ui.item.next().get(0);
 
@@ -55,11 +59,11 @@ Template.slides.rendered = function() {
 };
 
 Template.slides.helpers({
-	messages() {
+	messages: () => {
 		// Get the full list of slides
 		return Rooms.find({room: FlowRouter.getParam('roomID')}).fetch()[0].slides;
 	},
-	slide() {
+	slide: () => {
 		// Get the current slide with the stored offset, it loops.
 		let results = Rooms.find({room: FlowRouter.getParam('roomID')}).fetch()[0];
 		return results !== undefined && results.slides.length > 0 ? results.slides[results.slide % (results.slides.length + 1)] : null;
@@ -67,7 +71,7 @@ Template.slides.helpers({
 });
 
 Template.slides.events({
-	'submit #new-hyperlink'(event) {
+	'submit #new-hyperlink': (event) => {
 		event.preventDefault();
 
 		// Ensure the url has a protocol
@@ -102,7 +106,7 @@ Template.slides.events({
 
 		event.target.hyperlink.value = '';
 	},
-	'change #new-upload input[type="file"]'(event) {
+	'change #new-upload input[type="file"]': (event) => {
 		event.preventDefault();
 		for(var i = 0; i < event.target.files.length; i++) {
 			Meteor.saveFileClient(event.target.files[0], event.target.files[0].name, function(error, result) {
@@ -135,14 +139,14 @@ Template.slides.events({
 			});
 		}
 	},
-	'submit #new-content'(event) {
+	'submit #new-content': (event) => {
 		event.preventDefault();
 
 		Meteor.call('rooms.insertSlide', FlowRouter.getParam('roomID'), 'text', event.target.content.value);
 
 		event.target.content.value = '';
 	},
-	'submit .new-resource'(event) {
+	'submit .new-resource': (event) => {
 		// We don't want to reload!
 		event.preventDefault();
 
@@ -157,19 +161,19 @@ Template.slides.events({
 
 		$('pre:first code').each(function(i, block) {hljs.highlightBlock(block);});
 	},
-	'click .delete'(event) {
+	'click .delete': (event) => {
 		event.preventDefault();
 		Meteor.call('rooms.deleteSlide', FlowRouter.getParam('roomID'), parseInt(event.currentTarget.dataset.index));
 	},
-	'click .previous-card'(event) {
+	'click .previous-card': (event) => {
 		event.preventDefault();
 		Meteor.call('rooms.delta', FlowRouter.getParam('roomID'), -1);
 	},
-	'click .next-card'(event) {
+	'click .next-card': (event) => {
 		event.preventDefault();
 		Meteor.call('rooms.delta', FlowRouter.getParam('roomID'), +1);
 	},
-	'click #card-container .card'(event) {
+	'click #card-container .card': (event) => {
 		event.preventDefault();
 		Meteor.call('rooms.navigate', FlowRouter.getParam('roomID'), parseInt(event.currentTarget.dataset.index));
 	}
