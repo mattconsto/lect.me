@@ -1,12 +1,20 @@
+import { ReactiveVar } from 'meteor/reactive-var'
+
 import { Rooms } from '/imports/api/rooms.js';
 import { Messages } from '/imports/api/messages.js';
+import { Connections } from '/imports/api/connections.js';
+
 import { extensionBlacklist } from '/imports/blacklist.js';
 import { urlReplacements } from './replacements.js';
+
+connections = new ReactiveVar(0);
 
 Template.slides.onCreated(function() {
 	console.log(sessionID);
 	Meteor.subscribe('rooms');
 	Meteor.subscribe('messages', FlowRouter.getParam('roomID'), sessionID);
+	Meteor.subscribe('connections');
+	Meteor.call('connections.register', sessionID, FlowRouter.getParam('roomID'));
 	$('html').attr('fullscreen', false);
 
 	Meteor.call('rooms.create', FlowRouter.getParam('roomID'), "Untitled");
@@ -22,6 +30,15 @@ Template.slides.onCreated(function() {
 		added: function(id, entry) {
 			console.log(entry);
 		}
+	});
+
+	Connections.find({room: FlowRouter.getParam('roomID')}).observeChanges({
+		added: function (id, fields) {
+			connections.set(Connections.find({room: FlowRouter.getParam('roomID')}).count());
+		},
+		changed: function (id, fields) {
+			connections.set(Connections.find({room: FlowRouter.getParam('roomID')}).count());
+		},
 	});
 
 	$(document).on('keyup', function(event) {
@@ -67,7 +84,8 @@ Template.slides.helpers({
 		// Get the current slide with the stored offset, it loops.
 		let results = Rooms.find({room: FlowRouter.getParam('roomID')}).fetch()[0];
 		return results !== undefined && results.slides.length > 0 ? results.slides[results.slide % (results.slides.length + 1)] : null;
-	}
+	},
+	connections() {return connections.get();}
 });
 
 Template.slides.events({

@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import '../imports/api/rooms.js';
 import '../imports/api/messages.js';
+import '../imports/api/connections.js';
 import { Sanitizer } from '../lib/sanitizer.js';
 
 import { extensionBlacklist } from '../imports/blacklist.js';

@@ -1,10 +1,13 @@
 import { Rooms } from '/imports/api/rooms.js';
 import { Messages } from '/imports/api/messages.js';
+import { Connections } from '/imports/api/connections.js';
 
 Template.present.onCreated(function() {
 	console.log(sessionID);
 	Meteor.subscribe('rooms');
 	Meteor.subscribe('messages', FlowRouter.getParam('roomID'), sessionID);
+	Meteor.subscribe('connections');
+	Meteor.call('connections.register', sessionID, FlowRouter.getParam('roomID'));
 
 	// Horrible hack, try creating a room, and redirect if it DOESN'T error.
 	Meteor.call('rooms.create', FlowRouter.getParam('roomID'), "Untitled", (error, result) => {

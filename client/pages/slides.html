@@ -1,8 +1,13 @@
 <template name="slides">
 	<div class="row" style="margin-bottom: 0; width: 100%; height: calc(100% - 64px);">
 		<div class="col s9 m6 l3" style="height: 100%; overflow-x: hidden; overflow-y: scroll;">
-			<div class="card">
-				<div class="card-content">
+			<ul class="collapsible" data-collapsible="accordion">
+				<li>
+					<div class="collapsible-header" style="cursor: inherit;"><i class="material-icons">people</i>{{connections}} connection(s).</div>
+				</li>
+				<li>
+					<div class="collapsible-header"><i class="material-icons">create</i>Create a new slide</div>
+					<div class="collapsible-body">
 					<form action="#" id="new-upload" enctype="multipart/form-data" class="dropzone">
 						<div class="row">
 							<div class="file-field input-field">
@@ -36,12 +41,13 @@
 							<button class="waves-effect waves-light btn">Create</button>
 						</div>
 					</form>
-				</div>
-			</div>
+					</div>
+				</li>
+			</ul>
 
 			<div id="card-container" class="sortable">
 				{{#each message in messages}}
-				<div class="resource card" data-index="{{@index}}">
+				<div class="resource card" data-index="{{@index}}" style="cursor: move;">
 					<div class="card-content resource-title">
 						<button class="delete" data-index="{{@index}}">&times;</button> {{message.text}}
 					</div>

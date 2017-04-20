@@ -1,10 +1,14 @@
 import { Random } from 'meteor/random'
+import { Connections } from '/imports/api/connections.js';
 import { Sanitizer } from '../lib/sanitizer.js';
 import { Settings } from '../lib/settings.js';
 import '../imports/startup/accounts-config.js';
 
-// Pick a random sessionID
+// Pick a random sessionID, and send a heartbeat every 60 seconds
 sessionID = Random.id();
+Meteor.subscribe('connections');
+Meteor.call('connections.heartbeat', sessionID);
+Meteor.setInterval(() => Meteor.call('connections.heartbeat', sessionID), 60*1000);
 
 Meteor.saveFileClient = function(blob, name, callback) {
 	var fileReader = new FileReader();
