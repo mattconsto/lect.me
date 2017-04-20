@@ -5,7 +5,13 @@ import { Settings } from '../lib/settings.js';
 import '../imports/startup/accounts-config.js';
 
 // Pick a random sessionID, and send a heartbeat every 60 seconds
-sessionID = Random.id();
+if(localStorage.getItem("sessionID") != null) {
+	sessionID = localStorage.getItem("sessionID");
+} else {
+	sessionID = Random.id();
+	localStorage.setItem("sessionID", sessionID);
+}
+
 Meteor.subscribe('connections');
 Meteor.call('connections.heartbeat', sessionID);
 Meteor.setInterval(() => Meteor.call('connections.heartbeat', sessionID), 60*1000);
