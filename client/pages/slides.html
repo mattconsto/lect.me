@@ -42,7 +42,6 @@
 						</div>
 					</form>
 
-
 					<div class="row">
 						<div class="col s4">
 							<form action="#" id="new-titlecard">
@@ -66,11 +65,11 @@
 
 			<div id="card-container" class="sortable">
 				{{#each message in messages}}
-				<div class="resource card" data-index="{{@index}}" style="cursor: move;">
-					<div class="card-content resource-title">
+				<div class="resource card" data-index="{{@index}}">
+					<div class="card-content resource-title" style="cursor: move;">
 						<button class="delete" data-index="{{@index}}">&times;</button> {{message.text}}
 					</div>
-					<div class="card-image resource-contents">
+					<div class="card-image resource-contents" style="cursor: pointer;">
 						{{> resource type=message.type data=message}}
 					</div>
 				</div>
