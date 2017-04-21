@@ -120,6 +120,7 @@ Meteor.methods({
 		Meteor.call('rooms.isAuthor', roomID, this.userId);
 
 		Rooms.update({room: roomID}, {$push: {slides: { $each: [{type: type, data: data}], $position: Rooms.find({room: roomID}).fetch()[0].slide+1}}});
+		Rooms.update({room: roomID}, {$inc: {slide: 1}});
 	},
 	'rooms.moveSlide'(roomID, from, to) {
 		check(from, Number);
