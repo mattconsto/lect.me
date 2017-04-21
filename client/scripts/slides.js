@@ -157,6 +157,18 @@ Template.slides.events({
 			});
 		}
 	},
+	'submit #new-titlecard': (event) => {
+		event.preventDefault();
+		Meteor.call('rooms.insertSlide', FlowRouter.getParam('roomID'), 'title', []);
+	},
+	'submit #new-whiteboard': (event) => {
+		event.preventDefault();
+		Meteor.call('rooms.insertSlide', FlowRouter.getParam('roomID'), 'whiteboard', []);
+	},
+	'submit #new-blackboard': (event) => {
+		event.preventDefault();
+		Meteor.call('rooms.insertSlide', FlowRouter.getParam('roomID'), 'blackboard', []);
+	},
 	'submit #new-content': (event) => {
 		event.preventDefault();
 
