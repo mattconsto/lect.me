@@ -26,7 +26,7 @@ Meteor.methods({
 
 Meteor.setInterval(function () {
 	var now = (new Date()).getTime();
-	var idleThreshold = now - 300*1000; // 5 mins
+	var idleThreshold = now - 3*60*1000; // 3 mins
 	var removeThreshold = now - 900*1000; // 15mins
 
 	Connections.remove({timestamp: {$lt: removeThreshold}});

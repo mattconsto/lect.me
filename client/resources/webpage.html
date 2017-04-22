@@ -1,12 +1,7 @@
 <template name="resource_webpage">
 	<div>
-		<nav class="teal lighten-2" style="position: relative; z-index: 2; display: flex; padding: 10px;">
-			<a class="browser-back waves-effect waves-light btn white teal-text">&lt;</a>
-			<a class="browser-forward waves-effect waves-light btn teal-text white">&gt;</a>
-			<div class="input-field" style="flex-grow: 1;">
-				<input class="browser-address" type="text" value="{{data}}">
-			</div>
-			<a class="browser-navigate waves-effect waves-light btn white teal-text">→</a>
+		<nav class="teal lighten-2" style="position: relative; z-index: 2; padding: 0 20px;">
+			<input class="browser-address" type="text" value="{{data}}" style="padding: 0;">
 		</nav>
 		<iframe src="{{data}}" scrolling="no" sandbox="allow-same-origin allow-scripts allow-forms" tabindex="-1" style="width: 100%; height: 100%; border: none;">Iframes are not supported in your browser</iframe>
 	</div>
