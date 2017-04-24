@@ -11,6 +11,15 @@ if(Meteor.isServer) {
 	Meteor.publish('connections', function() {
 		return Connections.find({state: {$ne: 'idle'}});
 	});
+
+	Meteor.setInterval(function () {
+		var now = (new Date()).getTime();
+		var idleThreshold = now - 2*60*1000; // 3 mins
+		var removeThreshold = now - 10*60*1000; // 10 mins
+
+		Connections.remove({timestamp: {$lt: removeThreshold}});
+		Connections.update({timestamp: {$lt: idleThreshold}}, {$set: {status: 'idle'}});
+	}, 30*1000);
 }
 
 Meteor.methods({
@@ -23,12 +32,3 @@ Meteor.methods({
 		Connections.upsert({sessionID: sessionID}, {$set: {state: 'alive', room: roomID, timestamp: new Date()}});
 	}
 });
-
-Meteor.setInterval(function () {
-	var now = (new Date()).getTime();
-	var idleThreshold = now - 2*60*1000; // 3 mins
-	var removeThreshold = now - 10*60*1000; // 10 mins
-
-	Connections.remove({timestamp: {$lt: removeThreshold}});
-	Connections.update({timestamp: {$lt: idleThreshold}}, {$set: {status: 'idle'}});
-}, 30*1000);
