@@ -6,7 +6,7 @@
 					<div class="collapsible-header" style="cursor: inherit;"><i class="material-icons">people</i>{{connections}} connection(s)</div>
 				</li>
 				<li>
-					<div class="collapsible-header"><i class="material-icons">create</i>Create a new slide</div>
+					<div class="collapsible-header"><i class="material-icons">people</i>Create a new slide</div>
 					<div class="collapsible-body">
 					<form action="#" id="new-upload" enctype="multipart/form-data" class="dropzone">
 						<div class="row">
@@ -60,6 +60,9 @@
 						</div>
 					</div>
 					</div>
+				</li>
+				<li>
+					<div class="collapsible-header" style="cursor: inherit;"><a href="/show/{{clean "file" (param "roomID")}}" target="_blank" class="black-text"><i class="material-icons">slideshow</i>Present slideshow</a></div>
 				</li>
 			</ul>
 
