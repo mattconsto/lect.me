@@ -47,9 +47,8 @@ Meteor.methods({
 		let url    = ["/uploads/" + check + (ext != "" ? "." + ext : "")];
 		
 		// Check the extension is safe
-		if(extensionBlacklist[extension] === undefined || extensionBlacklist[extension] == "invalid") {
+		if(extensionBlacklist[ext] === undefined || extensionBlacklist[ext] == "invalid")
 			throw new Meteor.Error("invalid-extension", "");
-		}
 
 		// TODO Add file existance checks, etc...
 		try {

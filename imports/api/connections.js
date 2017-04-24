@@ -26,8 +26,8 @@ Meteor.methods({
 
 Meteor.setInterval(function () {
 	var now = (new Date()).getTime();
-	var idleThreshold = now - 3*60*1000; // 3 mins
-	var removeThreshold = now - 900*1000; // 15mins
+	var idleThreshold = now - 2*60*1000; // 3 mins
+	var removeThreshold = now - 10*60*1000; // 10 mins
 
 	Connections.remove({timestamp: {$lt: removeThreshold}});
 	Connections.update({timestamp: {$lt: idleThreshold}}, {$set: {status: 'idle'}});

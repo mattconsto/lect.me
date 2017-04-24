@@ -14,7 +14,7 @@ if(localStorage.getItem("sessionID") != null) {
 
 Meteor.subscribe('connections');
 Meteor.call('connections.heartbeat', sessionID);
-Meteor.setInterval(() => Meteor.call('connections.heartbeat', sessionID), 60*1000);
+Meteor.setInterval(function() {Meteor.call('connections.heartbeat', sessionID);}, 30*1000);
 
 Meteor.saveFileClient = function(blob, name, callback) {
 	var fileReader = new FileReader();
