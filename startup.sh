@@ -13,10 +13,13 @@ echo "Europe/London" > /etc/timezone && \
 # Start Nginx proxy
 nginx
 
+# Start MongoDB
+mongod --fork --logpath /project/mongo.log
+
 # Start our app
-cd /project/meteor
-meteor npm update
-meteor --allow-superuser
+cd /project/bundle
+(cd programs/server && npm install)
+MONGO_URL=mongodb://localhost:27017/lectme ROOT_URL=http://localhost PORT=3000 node main.js
 
 # Wait for ever, so docker doesn't kill this VM
 bash
