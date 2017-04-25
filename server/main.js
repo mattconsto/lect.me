@@ -54,7 +54,7 @@ Meteor.methods({
 		// TODO Add file existance checks, etc...
 		try {
 			require('fs').writeFileSync(path, blob, "binary");
-		} catch(e) {
+		} catch(err) {
 			throw new Meteor.Error(500, 'Failed to save file.', err);
 		}
 
