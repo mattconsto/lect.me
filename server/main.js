@@ -44,7 +44,7 @@ Meteor.methods({
 		var name   = Sanitizer.file(name || 'file');
 		let ext    = /(?:\.([^.]+))?$/.exec(name)[1].toLowerCase().replace(/[^a-z0-9_-]/, "") || "";
 		let check  = checksum(blob);
-		let path   = '../../../../../../uploads/' + check + (ext != "" ? "." + ext : "");
+		let path   = '/project/uploads/' + check + (ext != "" ? "." + ext : "");
 		let url    = ["/uploads/" + check + (ext != "" ? "." + ext : "")];
 		
 		// Check the extension is safe
