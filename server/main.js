@@ -9,6 +9,7 @@ import { extensionBlacklist } from '../imports/blacklist.js';
 
 Meteor.startup(() => {
 	// code to run on server at startup
+	console.log("Lect.Me is starting up!");
 });
 
 var crypto = require('crypto');
