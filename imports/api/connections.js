@@ -24,11 +24,18 @@ if(Meteor.isServer) {
 
 Meteor.methods({
 	'connections.heartbeat'(sessionID) {
-		Connections.upsert({sessionID: sessionID}, {$set: {timestamp: new Date()}, $setOnInsert: {state: 'idle', room: null}});
+		Connections.upsert({sessionID: sessionID}, {$set: {timestamp: new Date()}, $setOnInsert: {state: 'idle', room: null, rating: 0}});
 	},
 	'connections.register'(sessionID, roomID) {
 		check(roomID, String);
+		check(roomID, String);
 
-		Connections.upsert({sessionID: sessionID}, {$set: {state: 'alive', room: roomID, timestamp: new Date()}});
+		Connections.upsert({sessionID: sessionID}, {$set: {state: 'alive', room: roomID, rating: 0, timestamp: new Date()}});
+	},
+	'connections.rate'(sessionID, rating) {
+		check(rating, Number);
+		var sanitised = Math.max(-1, Math.min(1, rating));
+		
+		Connections.upsert({sessionID: sessionID}, {$set: {timestamp: new Date(), rating: sanitised}, $setOnInsert: {state: 'idle', room: null}});
 	}
 });

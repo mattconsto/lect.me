@@ -8,6 +8,7 @@ import { extensionBlacklist } from '/imports/blacklist.js';
 import { urlReplacements } from './replacements.js';
 
 connections = new ReactiveVar(0);
+rating = new ReactiveVar(0);
 
 Template.slides.onCreated(function() {
 	console.log(sessionID);
@@ -35,9 +36,36 @@ Template.slides.onCreated(function() {
 	Connections.find({room: FlowRouter.getParam('roomID')}).observeChanges({
 		added: function (id, fields) {
 			connections.set(Connections.find({room: FlowRouter.getParam('roomID')}).count());
+			var count = 0, total = 0, results = Connections.find({room: FlowRouter.getParam('roomID')}).fetch();
+			for(result in results) {
+				if(results[result].rating != 0) {
+					count++;
+					total += results[result].rating;
+				}
+			}
+			rating.set(count > 0 ? total/count*50 + 50 : 100);
 		},
 		changed: function (id, fields) {
 			connections.set(Connections.find({room: FlowRouter.getParam('roomID')}).count());
+			var count = 0, total = 0, results = Connections.find({room: FlowRouter.getParam('roomID')}).fetch();
+			for(result in results) {
+				if(results[result].rating != 0) {
+					count++;
+					total += results[result].rating;
+				}
+			}
+			rating.set(count > 0 ? total/count*50 + 50 : 100);
+		},
+		removed: function (id, fields) {
+			connections.set(Connections.find({room: FlowRouter.getParam('roomID')}).count());
+			var count = 0, total = 0, results = Connections.find({room: FlowRouter.getParam('roomID')}).fetch();
+			for(result in results) {
+				if(results[result].rating != 0) {
+					count++;
+					total += results[result].rating;
+				}
+			}
+			rating.set(count > 0 ? total/count*50 + 50 : 100);
 		},
 	});
 
@@ -85,7 +113,8 @@ Template.slides.helpers({
 		let results = Rooms.find({room: FlowRouter.getParam('roomID')}).fetch()[0];
 		return results !== undefined && results.slides.length > 0 ? results.slides[results.slide % (results.slides.length + 1)] : null;
 	},
-	connections() {return connections.get();}
+	connections() {return connections.get();},
+	rating() {return rating.get();}
 });
 
 Template.slides.events({

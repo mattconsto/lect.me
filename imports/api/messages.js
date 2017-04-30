@@ -17,6 +17,7 @@ if(Meteor.isServer) {
 Meteor.methods({
 	'messages.send'(roomID, sessionID, message) {
 		check(roomID, String);
+		check(sessionID, String);
 
 		try {
 			Meteor.call('rooms.isAuthor', roomID, this.userId);

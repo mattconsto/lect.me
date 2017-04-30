@@ -76,5 +76,13 @@ Template.present.events({
 	'click .next-card': (event) => {
 		event.preventDefault();
 		Meteor.call('rooms.delta', FlowRouter.getParam('roomID'), +1);
+	},
+	'click .rate-down': (event) => {
+		event.preventDefault();
+		Meteor.call('connections.rate', sessionID, -1);
+	},
+	'click .rate-up': (event) => {
+		event.preventDefault();
+		Meteor.call('connections.rate', sessionID, +1);
 	}
 });
