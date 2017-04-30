@@ -1,0 +1,36 @@
+<template name="revise">
+	<div class="row" style="margin-bottom: 0; width: 100%; height: calc(100% - 64px);">
+		<div class="col s9 m6 l3" style="height: 100%; overflow-x: hidden; overflow-y: scroll;">
+			<h4>Revising</h4>
+
+			<ul class="collapsible" data-collapsible="accordion">
+				<li>
+					<div class="collapsible-header" style="cursor: inherit;"><i class="material-icons">people</i>{{connections}}</div>
+				</li>
+				<li>
+					<div class="collapsible-header" style="cursor: inherit;"><a href="/show/{{clean "file" (param "roomID")}}" target="_blank" class="black-text"><i class="material-icons">slideshow</i>Join slideshow</a></div>
+				</li>
+			</ul>
+
+			<div id="card-container">
+				{{#each message in messages}}
+				<div class="resource card" data-index="{{@index}}">
+					<div class="card-content resource-title">
+						{{message.text}}
+					</div>
+					<div class="card-image resource-contents" style="cursor: pointer;">
+						{{> resource type=message.type data=message}}
+					</div>
+				</div>
+				{{/each}}
+			</div>
+		</div>
+		<div class="col s3 m6 l9" style="height: 100%; overflow: hidden; background: black;">
+			<div class="resource" style="height: 100%;">
+				<div class="resource-contents" style="height: 100%;">
+					{{> resource type=slide.type data=slide}}
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
