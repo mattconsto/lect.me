@@ -1,2 +1,4 @@
+*.pem
+*.key
 /project
 /project.tar.gz
