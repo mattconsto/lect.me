@@ -9,6 +9,7 @@ import { urlReplacements } from './replacements.js';
 
 connections = new ReactiveVar(0);
 rating = new ReactiveVar(0);
+ratings = new ReactiveVar(0);
 
 Template.slides.onCreated(function() {
 	console.log(sessionID);
@@ -43,6 +44,7 @@ Template.slides.onCreated(function() {
 					total += results[result].rating;
 				}
 			}
+			ratings.set(count);
 			rating.set(count > 0 ? total/count*50 + 50 : 100);
 		},
 		changed: function (id, fields) {
@@ -54,6 +56,7 @@ Template.slides.onCreated(function() {
 					total += results[result].rating;
 				}
 			}
+			ratings.set(count);
 			rating.set(count > 0 ? total/count*50 + 50 : 100);
 		},
 		removed: function (id, fields) {
@@ -65,6 +68,7 @@ Template.slides.onCreated(function() {
 					total += results[result].rating;
 				}
 			}
+			ratings.set(count);
 			rating.set(count > 0 ? total/count*50 + 50 : 100);
 		},
 	});
@@ -113,8 +117,19 @@ Template.slides.helpers({
 		let results = Rooms.find({room: FlowRouter.getParam('roomID')}).fetch()[0];
 		return results !== undefined && results.slides.length > 0 ? results.slides[results.slide % (results.slides.length + 1)] : null;
 	},
-	connections() {return connections.get();},
-	rating() {return rating.get();}
+	connections() {
+		switch(connections.get()) {
+			case 1:  return connections.get() + " connection";
+			default: return connections.get() + " connections";
+		}
+	},
+	rating() {
+		switch(ratings.get()) {
+			case 0:  return "No ratings";
+			case 1:  return rating.get() + "% (1 rating)";
+			default: return rating.get() + "%(" + ratings.get() + " ratings)";
+		}
+	}
 });
 
 Template.slides.events({
