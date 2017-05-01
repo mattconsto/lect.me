@@ -16,7 +16,7 @@ RUN mkdir /project
 ADD project.tar.gz /project
 RUN mkdir /project/uploads
 ADD uploads.html /project/uploads/index.html
-ADD cert.pem /project/cert.pem
+ADD cert.pem /project/cert.pem
 ADD cert.key /project/cert.key
 ADD nginx.config /etc/nginx/sites-enabled/default
 ADD startup.sh /startup.sh
