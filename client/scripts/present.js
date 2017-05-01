@@ -3,7 +3,6 @@ import { Messages } from '/imports/api/messages.js';
 import { Connections } from '/imports/api/connections.js';
 
 Template.present.onCreated(function() {
-	console.log(sessionID);
 	Meteor.subscribe('rooms');
 	Meteor.subscribe('messages', FlowRouter.getParam('roomID'), sessionID);
 	Meteor.subscribe('connections');

@@ -11,6 +11,7 @@ if(localStorage.getItem("sessionID") != null) {
 	sessionID = Random.id();
 	localStorage.setItem("sessionID", sessionID);
 }
+console.log("sessionID: " + sessionID);
 
 Meteor.subscribe('connections');
 Meteor.call('connections.heartbeat', sessionID);

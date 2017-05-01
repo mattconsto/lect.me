@@ -5,14 +5,14 @@ Template.page_index.events({
 	}
 });
 
-Template.resource.events({
-	'mousedown, mouseup': (event) => {
-		Meteor.call('messages.send', FlowRouter.getParam('roomID'), sessionID, [event.currentTarget.localName, event.type, []]);
-	},
-	'mousemove' (event) {
-		Meteor.call('messages.send', FlowRouter.getParam('roomID'), sessionID, [event.currentTarget.localName, event.type, [event.offsetX/event.currentTarget.width, event.offsetY/event.currentTarget.height]]);
-	}
-})
+// Template.resource.events({
+// 	'mousedown, mouseup': (event) => {
+// 		Meteor.call('messages.send', FlowRouter.getParam('roomID'), sessionID, [event.currentTarget.localName, event.type, []]);
+// 	},
+// 	'mousemove' (event) {
+// 		Meteor.call('messages.send', FlowRouter.getParam('roomID'), sessionID, [event.currentTarget.localName, event.type, [event.offsetX/event.currentTarget.width, event.offsetY/event.currentTarget.height]]);
+// 	}
+// })
 
 Template.resource_audio.events({
 	'abort audio, pause audio, play audio, stalled audio, seeked audio': (event) => {

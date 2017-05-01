@@ -15,9 +15,6 @@
 			<div id="card-container">
 				{{#each message in messages}}
 				<div class="resource card" data-index="{{@index}}">
-					<div class="card-content resource-title">
-						{{message.text}}
-					</div>
 					<div class="card-image resource-contents" style="cursor: pointer;">
 						{{> resource type=message.type data=message}}
 					</div>

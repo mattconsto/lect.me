@@ -11,7 +11,6 @@ connections = new ReactiveVar(0);
 slideNumber = new ReactiveVar(0);
 
 Template.revise.onCreated(function() {
-	console.log(sessionID);
 	Meteor.subscribe('rooms');
 	Meteor.subscribe('messages', FlowRouter.getParam('roomID'), sessionID);
 	Meteor.subscribe('connections');
@@ -19,12 +18,6 @@ Template.revise.onCreated(function() {
 	$('html').attr('fullscreen', false);
 
 	Meteor.call('rooms.create', FlowRouter.getParam('roomID'), "Untitled");
-	// Meteor.call('rooms.create', FlowRouter.getParam('roomID'), "Untitled", (error, result) => {
-	// 	Meteor.call('rooms.isAuthor', FlowRouter.getParam('roomID'), (error, result) => {
-	// 		console.log(error);
-	// 		console.log(result);
-	// 	});
-	// });
 	
 	// Subscribe to changes
 	Messages.find({room: FlowRouter.getParam('roomID'), sessionID: {$ne: sessionID}}).observeChanges({

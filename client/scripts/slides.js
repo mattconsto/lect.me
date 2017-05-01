@@ -12,7 +12,6 @@ rating = new ReactiveVar(0);
 ratings = new ReactiveVar(0);
 
 Template.slides.onCreated(function() {
-	console.log(sessionID);
 	Meteor.subscribe('rooms');
 	Meteor.subscribe('messages', FlowRouter.getParam('roomID'), sessionID);
 	Meteor.subscribe('connections');
@@ -20,12 +19,6 @@ Template.slides.onCreated(function() {
 	$('html').attr('fullscreen', false);
 
 	Meteor.call('rooms.create', FlowRouter.getParam('roomID'), "Untitled");
-	// Meteor.call('rooms.create', FlowRouter.getParam('roomID'), "Untitled", (error, result) => {
-	// 	Meteor.call('rooms.isAuthor', FlowRouter.getParam('roomID'), (error, result) => {
-	// 		console.log(error);
-	// 		console.log(result);
-	// 	});
-	// });
 	
 	// Subscribe to changes
 	Messages.find({room: FlowRouter.getParam('roomID'), sessionID: {$ne: sessionID}}).observeChanges({
@@ -219,21 +212,6 @@ Template.slides.events({
 		Meteor.call('rooms.insertSlide', FlowRouter.getParam('roomID'), 'text', event.target.content.value);
 
 		event.target.content.value = '';
-	},
-	'submit .new-resource': (event) => {
-		// We don't want to reload!
-		event.preventDefault();
-
-		const target = event.target;
-		const type	 = target.type.value;
-		const text	 = target.text.value;
-
-		Meteor.call('rooms.insertSlide', FlowRouter.getParam('roomID'), type, text);
-
-		// Clear
-		target.text.value = '';
-
-		$('pre:first code').each(function(i, block) {hljs.highlightBlock(block);});
 	},
 	'click .delete': (event) => {
 		event.preventDefault();

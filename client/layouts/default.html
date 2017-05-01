@@ -1,10 +1,6 @@
 <template name="layout_default">
-	{{#unless iframe}}
-		{{> header}}
-		{{> Template.dynamic template=content}}
-		<div id="footer-pading"></div>
-		{{> footer}}
-	{{else}}
-		<h1>{{settings "name"}} cannot run inside an iframe.</h1>
-	{{/unless}}
+	{{> header}}
+	{{> Template.dynamic template=content}}
+	<div id="footer-pading"></div>
+	{{> footer}}
 </template>

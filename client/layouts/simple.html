@@ -1,7 +1,3 @@
 <template name="layout_simple">
-	{{#unless iframe}}
-		{{> Template.dynamic template=content}}
-	{{else}}
-		<h1>{{settings "name"}} cannot run inside an iframe.</h1>
-	{{/unless}}
+	{{> Template.dynamic template=content}}
 </template>
