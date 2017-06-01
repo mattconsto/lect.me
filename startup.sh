@@ -14,12 +14,12 @@ echo "Europe/London" > /etc/timezone && \
 nginx
 
 # Start MongoDB
-mongod --fork --logpath /project/mongo.log
+mongod --fork --logpath /lect.me/mongo.log
 
 # Start our app
-cd /project/bundle
+cd /lect.me/bundle
 (cd programs/server && npm install)
-MONGO_URL=mongodb://localhost:27017/lectme ROOT_URL=http://lect.me PORT=3000 node main.js
+MONGO_URL=mongodb://localhost:27017/lect_me ROOT_URL=http://lect.me PORT=3000 node main.js
 
 # Wait for ever, so docker doesn't kill this VM
 bash

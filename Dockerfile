@@ -12,14 +12,14 @@ RUN apt-get update -y && apt-get upgrade -y
 RUN apt-get install nginx pdftk libreoffice nodejs mongodb-org -y
 RUN locale-gen en_US en_US.UTF-8
 RUN ln /usr/bin/nodejs /usr/sbin/node
-RUN mkdir /project
-ADD project.tar.gz /project
-RUN mkdir /project/uploads
-ADD uploads.html /project/uploads/index.html
-ADD cert.pem /project/cert.pem
-ADD cert.key /project/cert.key
+RUN mkdir /lect.me
+ADD lect.me.tar.gz /lect.me
+RUN mkdir /lect.me/uploads
+ADD uploads.html /lect.me/uploads/index.html
+ADD cert.pem /lect.me/cert.pem
+ADD cert.key /lect.me/cert.key
 ADD nginx.config /etc/nginx/sites-enabled/default
 ADD startup.sh /startup.sh
 RUN chmod +x /startup.sh
 RUN mkdir -p /data/db
-ENTRYPOINT /startup.sh > /project/output.log 2> /project/error.log
+ENTRYPOINT /startup.sh > /lect.me/output.log 2> /lect.me/error.log

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-scp project.tar.gz cert.pem cert.key root@178.62.3.86:/root/project
+scp lect.me.tar.gz cert.pem cert.key root@lect.me:/root/lect.me

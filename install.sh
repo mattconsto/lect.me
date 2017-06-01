@@ -1,4 +1,4 @@
 #!/bin/bash
 
-rm -rf project
-docker build -t educast .
+rm -rf lect.me
+docker build -t lect_me .
